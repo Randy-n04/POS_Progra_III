@@ -7,7 +7,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+//
 public class Application {
     public static void main(String[] args) {
         try {
