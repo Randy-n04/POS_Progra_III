@@ -1,3 +1,4 @@
+//Andres Alfaro
 package pos.logic;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
