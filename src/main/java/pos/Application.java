@@ -34,6 +34,13 @@ public class Application {
 
         tabbedPane.addTab("Clientes  ",clientesIcon,clientesView.getPanel());
 
+        pos.presentation.productos.ModelProd productosModel= new pos.presentation.productos.ModelProd();
+        pos.presentation.productos.ViewProd productosView = new pos.presentation.productos.ViewProd();
+        productosController = new pos.presentation.productos.ControllerProd(productosView, productosModel);
+        Icon productosIcon= new ImageIcon(Application.class.getResource("/pos/presentation/icons/product.png"));
+
+        tabbedPane.addTab("Productos  ",productosIcon,productosView.getPanelGen());
+
         window.setSize(900,450);
         window.setResizable(false);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -43,6 +50,7 @@ public class Application {
     }
 
     public static pos.presentation.clientes.Controller clientesController;
+    public static pos.presentation.productos.ControllerProd productosController;
 
     public static JFrame window;
 
