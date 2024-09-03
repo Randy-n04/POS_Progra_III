@@ -70,4 +70,39 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+//================= PRODUCTOS ============
+
+    public void create(Producto e) throws Exception{
+        Producto result = data.getProductos().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
+        if (result==null) data.getProductos().add(e);
+        else throw new Exception("Producto ya existe");
+    }
+
+    public Producto read(Producto e) throws Exception{
+        Producto result = data.getProductos().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
+        if (result!=null) return result;
+        else throw new Exception("Producto no existe");
+    }
+
+    public void update(Producto e) throws Exception{
+        Producto result;
+        try{
+            result = this.read(e);
+            data.getProductos().remove(result);
+            data.getProductos().add(e);
+        }catch (Exception ex) {
+            throw new Exception("Producto no existe");
+        }
+    }
+
+    public void delete(Producto e) throws Exception{
+        data.getProductos().remove(e);
+    }
+
+    public List<Producto> search(Producto e){
+        return data.getProductos().stream()
+                .filter(i->i.getDescripcion().contains(e.getDescripcion()))
+                .sorted(Comparator.comparing(Producto::getDescripcion))
+                .collect(Collectors.toList());
+    }
  }
