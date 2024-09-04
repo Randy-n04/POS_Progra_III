@@ -14,12 +14,20 @@ public class Data {
     @XmlElement(name = "cliente")
     private List<Cliente> clientes;
 
+    @XmlElementWrapper(name = "cajeros")
+    @XmlElement(name = "cajero")
+    private List<Cajero> cajeros;
+
     public Data() {
         clientes = new ArrayList<>();
+        cajeros = new ArrayList<>();
     }
+
 
     public List<Cliente> getClientes() {
         return clientes;
     }
+
+    public List<Cajero> getCajeros() {return cajeros;}
 
 }

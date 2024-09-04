@@ -70,4 +70,38 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+//================= CAJEROS ============
+    public void create(Cajero e) throws Exception{
+        Cajero result = data.getCajeros().stream().filter(i->i.getId().equals(e.getId())).findFirst().orElse(null);
+        if (result==null) data.getCajeros().add(e);
+        else throw new Exception("Cajero ya existe");
+    }
+
+    public Cajero read(Cajero e) throws Exception{
+        Cajero result = data.getCajeros().stream().filter(i->i.getId().equals(e.getId())).findFirst().orElse(null);
+        if (result!=null) return result;
+        else throw new Exception("Cliente no existe");
+    }
+
+    public void update(Cajero e) throws Exception{
+        Cajero result;
+        try{
+            result = this.read(e);
+            data.getCajeros().remove(result);
+            data.getCajeros().add(e);
+        }catch (Exception ex) {
+            throw new Exception("Cajero no existe");
+        }
+    }
+
+    public void delete(Cajero e) throws Exception{
+        data.getCajeros().remove(e);
+    }
+
+    public List<Cajero> search(Cajero e){
+        return data.getCajeros().stream().filter(i->i.getNombre().contains(e.getNombre()))
+                .sorted(Comparator.comparing(Cajero::getNombre))
+                .collect(Collectors.toList());
+    }
+
  }
