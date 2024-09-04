@@ -2,6 +2,7 @@ package pos.presentation.cajero;
 
 import pos.Application;
 import pos.logic.Cajero;
+import pos.logic.Cliente;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
@@ -19,8 +20,8 @@ public class View implements PropertyChangeListener {
     private JPanel Búsqueda;
     private JPanel Cajero;
     private JTextField searchNombre;
-    private JButton report;
-    private JButton search;
+    private JButton reportNombreBtn;
+    private JButton searchNombreBtn;
     private JLabel searchNombreLbl;
     private JTable list;
     private JButton save;
@@ -30,18 +31,35 @@ public class View implements PropertyChangeListener {
     private JTextField Nombre;
     private JLabel IDlbl;
     private JLabel Nombrelbl;
+    private JLabel searchIdLbl;
+    private JTextField searchId;
+    private JButton searchIdBtn;
+    private JButton reportIdBtn;
 
     public JPanel getPanel() {
         return panel;
     }
 
     public View() {
-        search.addActionListener(new ActionListener() {
+        searchNombreBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     Cajero filter = new Cajero();
                     filter.setNombre(searchNombre.getText());
+                    controller.search(filter);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(panel, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
+        searchIdBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Cajero filter = new Cajero();
+                    filter.setId(searchId.getText());
                     controller.search(filter);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -165,6 +183,7 @@ public class View implements PropertyChangeListener {
                 break;
             case Model.FILTER:
                 searchNombre.setText(model.getFilter().getNombre());
+                searchId.setText(model.getFilter().getId());
                 break;
         }
         this.panel.revalidate();

@@ -18,17 +18,14 @@ public class Data {
     @XmlElementWrapper(name = "cajeros")
     @XmlElement(name = "cajero")
     private List<Cajero> cajeros;
-
-    public Data() {
-        clientes = new ArrayList<>();
-        cajeros = new ArrayList<>();
-      
     //-------------PRODUCTOS-------------
     @XmlElementWrapper(name = "productos")
     @XmlElement(name = "producto")
     private List<Producto> productos;
+
     public Data() {
         clientes = new ArrayList<>();
+        cajeros = new ArrayList<>();
         productos = new ArrayList<>();
     }
     

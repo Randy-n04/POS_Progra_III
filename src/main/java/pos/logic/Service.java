@@ -64,10 +64,18 @@ public class Service {
     }
 
     public List<Cliente> search(Cliente e){
-        return data.getClientes().stream()
-                .filter(i->i.getNombre().contains(e.getNombre()))
-                .sorted(Comparator.comparing(Cliente::getNombre))
-                .collect(Collectors.toList());
+        if (e.getId() != null && !e.getId().isEmpty()) {
+            return data.getClientes().stream()
+                    .filter(i -> i.getId().contains(e.getId()))
+                    .sorted(Comparator.comparing(Cliente::getNombre))
+                    .collect(Collectors.toList());
+        }
+        else {
+            return data.getClientes().stream()
+                    .filter(i -> i.getNombre().contains(e.getNombre()))
+                    .sorted(Comparator.comparing(Cliente::getNombre))
+                    .collect(Collectors.toList());
+        }
     }
 
 
@@ -100,9 +108,19 @@ public class Service {
     }
 
     public List<Cajero> search(Cajero e){
-        return data.getCajeros().stream().filter(i->i.getNombre().contains(e.getNombre()))
-                .sorted(Comparator.comparing(Cajero::getNombre))
-                .collect(Collectors.toList());
+        if (e.getId() != null && !e.getId().isEmpty()) {
+            return data.getCajeros().stream()
+                    .filter(i -> i.getId().contains(e.getId()))
+                    .sorted(Comparator.comparing(Cajero::getId))
+                    .collect(Collectors.toList());
+        }
+
+        else {
+            return data.getCajeros().stream()
+                    .filter(i -> i.getNombre().contains(e.getNombre()))
+                    .sorted(Comparator.comparing(Cajero::getNombre))
+                    .collect(Collectors.toList());
+        }
     }
 
 //================= PRODUCTOS ============
@@ -135,10 +153,19 @@ public class Service {
     }
 
     public List<Producto> search(Producto e){
-        return data.getProductos().stream()
-                .filter(i->i.getDescripcion().contains(e.getDescripcion()))
-                .sorted(Comparator.comparing(Producto::getDescripcion))
-                .collect(Collectors.toList());
+        if (e.getCodigo() != null && !e.getCodigo().isEmpty()) {
+            return data.getProductos().stream()
+                    .filter(i -> i.getCodigo().contains(e.getCodigo()))
+                    .sorted(Comparator.comparing(Producto::getCodigo))
+                    .collect(Collectors.toList());
+        }
+
+        else {
+            return data.getProductos().stream()
+                    .filter(i -> i.getDescripcion().contains(e.getDescripcion()))
+                    .sorted(Comparator.comparing(Producto::getDescripcion))
+                    .collect(Collectors.toList());
+        }
     }
   
  }
