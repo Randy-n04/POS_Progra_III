@@ -29,21 +29,38 @@ import java.beans.PropertyChangeListener;
         private JButton clear;
         private JLabel searchDescripcionLbl;
         private JTextField searchDescripcion;
-        private JButton report;
-        private JButton search;
+        private JButton reportDescripcionBtn;
+        private JButton searchDescripcionBtn;
         private JTable list;
         private JTextField categoria;
         private JLabel categoriaLbl;
+        private JLabel searchCodigoLbl;
+        private JTextField searchCodigo;
+        private JButton searchCodigoBtn;
+        private JButton reportCodigoBtn;
 
         public JPanel getPanelGen(){return panelGen;}
 
         public ViewProd(){
-            search.addActionListener(new ActionListener() {
+            searchDescripcionBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try{
                         Producto filter = new Producto();
                         filter.setDescripcion(searchDescripcion.getText());
+                        controller.search(filter);
+                    } catch(Exception ex){
+                        JOptionPane.showMessageDialog(panelGen, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            });
+
+            searchCodigoBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try{
+                        Producto filter = new Producto();
+                        filter.setCodigo(searchCodigo.getText());
                         controller.search(filter);
                     } catch(Exception ex){
                         JOptionPane.showMessageDialog(panelGen, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -219,6 +236,7 @@ import java.beans.PropertyChangeListener;
                     break;
                 case ModelProd.FILTER:
                     searchDescripcion.setText(model.getFilter().getDescripcion());
+                    searchCodigo.setText(model.getFilter().getCodigo());
                     break;
             }
 

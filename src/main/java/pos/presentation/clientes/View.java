@@ -4,9 +4,7 @@ import pos.Application;
 import pos.logic.Cliente;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,12 +15,12 @@ import java.beans.PropertyChangeListener;
 public class View implements PropertyChangeListener {
     private JPanel panel;
     private JTextField searchNombre;
-    private JButton search;
+    private JButton searchNombreBtn;
     private JButton save;
     private JTable list;
     private JButton delete;
     private JLabel searchNombreLbl;
-    private JButton report;
+    private JButton reportNombreBtn;
     private JTextField id;
     private JTextField nombre;
     private JTextField email;
@@ -34,18 +32,35 @@ public class View implements PropertyChangeListener {
     private JTextField telefono;
     private JLabel descuentoLbl;
     private JTextField descuento;
+    private JTextField searchId;
+    private JLabel searchIdLbl;
+    private JButton searchIdBtn;
+    private JButton reportIdBtn;
 
     public JPanel getPanel() {
         return panel;
     }
 
     public View() {
-        search.addActionListener(new ActionListener() {
+        searchNombreBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     Cliente filter = new Cliente();
                     filter.setNombre(searchNombre.getText());
+                    controller.search(filter);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(panel, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
+        searchIdBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Cliente filter = new Cliente();
+                    filter.setId(searchId.getText());
                     controller.search(filter);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -209,6 +224,7 @@ public class View implements PropertyChangeListener {
                 break;
             case Model.FILTER:
                 searchNombre.setText(model.getFilter().getNombre());
+                searchId.setText(model.getFilter().getId());
                 break;
         }
 
