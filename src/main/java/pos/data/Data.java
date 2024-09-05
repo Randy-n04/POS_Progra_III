@@ -23,10 +23,16 @@ public class Data {
     @XmlElement(name = "producto")
     private List<Producto> productos;
 
+    //-------------FACTURAS-------------
+    @XmlElementWrapper(name = "facturas")
+    @XmlElement(name = "factura")
+    private List<Factura> facturas;
+
     public Data() {
         clientes = new ArrayList<>();
         cajeros = new ArrayList<>();
         productos = new ArrayList<>();
+        facturas = new ArrayList<>();
     }
     
     public List<Cliente> getClientes() {
@@ -38,6 +44,7 @@ public class Data {
     public List<Producto> getProductos() {
         return productos;
     }
+    public List<Factura> getFacturas() { return facturas; }
 
    
 
