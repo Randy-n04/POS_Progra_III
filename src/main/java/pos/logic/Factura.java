@@ -48,7 +48,7 @@ public class Factura {
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        this.numero = "FAC-" + numero;
     }
 
     public Date getFecha() {
