@@ -46,6 +46,4 @@ public class Data {
     }
     public List<Factura> getFacturas() { return facturas; }
 
-   
-
 }

@@ -1,4 +1,4 @@
-package pos.presentation.factura;
+package pos.presentation.facturas;
 
 import pos.Application;
 import pos.logic.Factura;
@@ -67,4 +67,7 @@ public class Model extends AbstractModel {
     public static final String LIST = "list";
     public static final String CURRENT = "current";
     public static final String FILTER = "filter";
+
+    public void addPropertyChangeListener(View view) {
+    }
 }
