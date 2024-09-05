@@ -42,7 +42,7 @@ import pos.logic.Service;
                 model.setMode(Application.MODE_EDIT);
                 model.setCurrent(Service.instance().read(e));
             } catch (Exception ex) {
-                // Manejar excepciones si es necesario
+
             }
         }
 
