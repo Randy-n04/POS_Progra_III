@@ -1,6 +1,8 @@
 package pos;
 
 import pos.logic.Service;
+import pos.presentation.facturas.Controller;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -26,6 +28,14 @@ public class Application {
                 Service.instance().stop();
             }
         });
+        //-----------------------------------------Facturas------------------------------------------------
+        pos.presentation.facturas.Model facturasModel= new pos.presentation.facturas.Model();
+        pos.presentation.facturas.View facturasView = new pos.presentation.facturas.View();
+        facturasController = new pos.presentation.facturas.Controller(facturasView, facturasModel);
+        Icon facturasIcon= new ImageIcon(Application.class.getResource("/pos/presentation/icons/invoice.png"));
+
+        tabbedPane.addTab("Facturas  ",facturasIcon,facturasView.getPanel());
+
         //-----------------------------------------Cliente------------------------------------------------
         pos.presentation.clientes.Model clientesModel= new pos.presentation.clientes.Model();
         pos.presentation.clientes.View clientesView = new pos.presentation.clientes.View();
@@ -65,6 +75,8 @@ public class Application {
     public static pos.presentation.cajero.Controller cajerosController;
 
     public static pos.presentation.productos.ControllerProd productosController;
+
+    public static pos.presentation.facturas.Controller facturasController;
 
 
     public static JFrame window;

@@ -1,14 +1,14 @@
-package pos.presentation.factura;
+package pos.presentation.facturas;
 
 import pos.Application;
 import pos.logic.Factura;
 import pos.logic.Service;
 
     public class Controller {
-        ViewFactura view;
-        ModelFactura model;
+        View view;
+        Model model;
 
-        public Controller(ViewFactura view, ModelFactura model) {
+        public Controller(View view, Model model) {
             model.init(Service.instance().search(new Factura()));
             this.view = view;
             this.model = model;
