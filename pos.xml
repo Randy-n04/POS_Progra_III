@@ -122,6 +122,14 @@
             <existencias>20</existencias>
             <categoria>Granos/Legumbres</categoria>
         </producto>
+        <producto>
+            <codigo>PRO-895</codigo>
+            <descripcion>Pocky</descripcion>
+            <unidadMedida>Cajas</unidadMedida>
+            <precioUnitario>3700.0</precioUnitario>
+            <existencias>12</existencias>
+            <categoria>Snacks</categoria>
+        </producto>
     </productos>
     <facturas/>
 </data>
