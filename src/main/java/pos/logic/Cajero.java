@@ -28,7 +28,7 @@ public class Cajero {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = "CAJ-" + id;
     }
 
     public String getNombre() {

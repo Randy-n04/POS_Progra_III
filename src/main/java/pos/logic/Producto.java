@@ -38,7 +38,7 @@ public class Producto {
    }
 
    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+        this.codigo = "PRO-" + codigo;
    }
 
    public String getDescripcion() {

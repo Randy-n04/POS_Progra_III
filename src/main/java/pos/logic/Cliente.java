@@ -33,7 +33,7 @@ public class Cliente {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = "CLI-" + id;
     }
 
     public String getNombre() {
