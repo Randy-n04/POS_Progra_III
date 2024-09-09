@@ -123,8 +123,20 @@ public class Service {
         }
     }
 
-//================= PRODUCTOS ============
+//================= CATEGORIAS ============
+    public void create(Categoria e) throws Exception{
+        Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
+        if (result==null) data.getCategorias().add(e);
+        else throw new Exception("Categoria ya existe");
+    }
 
+    public Categoria read(Categoria e) throws Exception{
+        Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
+        if (result!=null) return result;
+        else throw new Exception("Categoria no existe");
+    }
+
+//================= PRODUCTOS ============
     public void create(Producto e) throws Exception{
         Producto result = data.getProductos().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result==null) data.getProductos().add(e);
