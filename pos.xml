@@ -86,7 +86,7 @@
         </categoria>
         <categoria>
             <codigo>CAT-010</codigo>
-            <nombre>Limpieza/CuidadoPersonal</nombre>
+            <nombre>Granos/Legumbres</nombre>
         </categoria>
     </categorias>
     <productos>
@@ -113,6 +113,14 @@
             <precioUnitario>2000.0</precioUnitario>
             <existencias>8</existencias>
             <categoria>Congelados</categoria>
+        </producto>
+        <producto>
+            <codigo>PRO-004</codigo>
+            <descripcion>Arroz precocido</descripcion>
+            <unidadMedida>Gramos</unidadMedida>
+            <precioUnitario>1200.0</precioUnitario>
+            <existencias>20</existencias>
+            <categoria>Granos/Legumbres</categoria>
         </producto>
     </productos>
     <facturas/>
