@@ -18,6 +18,12 @@ public class Data {
     @XmlElementWrapper(name = "cajeros")
     @XmlElement(name = "cajero")
     private List<Cajero> cajeros;
+
+    //-------------CATEGORIAS------------
+    @XmlElementWrapper(name = "categorias")
+    @XmlElement(name = "categoria")
+    private List<Categoria> categorias;
+
     //-------------PRODUCTOS-------------
     @XmlElementWrapper(name = "productos")
     @XmlElement(name = "producto")
@@ -31,6 +37,7 @@ public class Data {
     public Data() {
         clientes = new ArrayList<>();
         cajeros = new ArrayList<>();
+        categorias = new ArrayList<>();
         productos = new ArrayList<>();
         facturas = new ArrayList<>();
     }
@@ -41,6 +48,7 @@ public class Data {
     public List<Cajero> getCajeros() {
       return cajeros;
     }
+    public List<Categoria> getCategorias() { return categorias; }
     public List<Producto> getProductos() {
         return productos;
     }

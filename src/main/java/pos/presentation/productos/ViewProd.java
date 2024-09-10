@@ -1,6 +1,9 @@
 package pos.presentation.productos;
 
+import pos.data.Data;
+import pos.data.XmlPersister;
 import pos.Application;
+import pos.logic.Categoria;
 import pos.logic.Producto;
 
 import javax.swing.*;
@@ -11,8 +14,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
-    public class ViewProd implements PropertyChangeListener {
+public class ViewProd implements PropertyChangeListener {
         private JPanel panelGen;
         private JLabel codigoLbl;
         private JTextField codigo;
@@ -32,7 +36,7 @@ import java.beans.PropertyChangeListener;
         private JButton reportDescripcionBtn;
         private JButton searchDescripcionBtn;
         private JTable list;
-        private JTextField categoria;
+        private JComboBox categorias;
         private JLabel categoriaLbl;
         private JLabel searchCodigoLbl;
         private JTextField searchCodigo;
@@ -109,6 +113,26 @@ import java.beans.PropertyChangeListener;
                     controller.clear();
                 }
             });
+
+            categorias.setEditable(false);
+            categorias.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Categoria selectedCat = (Categoria) categorias.getSelectedItem();
+                    System.out.println("Selected Category: " + selectedCat.getNombre());
+                }
+            });
+            try {
+                Data data = XmlPersister.instance().load();
+                List<Categoria> categoriasData = data.getCategorias();
+                DefaultComboBoxModel<Categoria> model = new DefaultComboBoxModel<>();
+                for (Categoria categoria : categoriasData) {
+                    model.addElement(categoria);
+                }
+                categorias.setModel(model);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(panelGen, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         private boolean validate() {
@@ -160,14 +184,15 @@ import java.beans.PropertyChangeListener;
                 existenciasLbl.setToolTipText("Existencias invalida");
             }
 
-            if (categoria.getText().isEmpty()) {
+            if (categorias.getSelectedItem() == null) {
                 valid = false;
                 categoriaLbl.setBorder(Application.BORDER_ERROR);
-                categoriaLbl.setToolTipText("Categoria requerida");
+                categoriaLbl.setToolTipText("Categoria invalida");
             } else {
                 categoriaLbl.setBorder(null);
                 categoriaLbl.setToolTipText(null);
             }
+
 
             return valid;
         }
@@ -179,7 +204,10 @@ import java.beans.PropertyChangeListener;
             e.setUnidadMedida(unidadMedida.getText());
             e.setPrecioUnitario(Float.parseFloat(precioUnidad.getText()));
             e.setExistencias(Integer.parseInt(existencias.getText()));
-            e.setCategoria(categoria.getText());
+            Categoria selectedCat = (Categoria) categorias.getSelectedItem();
+            if(selectedCat != null){
+                e.setCategoria(selectedCat.getNombre());
+            }
             return e;
         }
 
@@ -213,8 +241,16 @@ import java.beans.PropertyChangeListener;
                     unidadMedida.setText(model.getCurrent().getUnidadMedida());
                     precioUnidad.setText("" + model.getCurrent().getPrecioUnitario());
                     existencias.setText("" + model.getCurrent().getExistencias());
-                    categoria.setText(model.getCurrent().getCategoria());
-
+                    String nombreCat = model.getCurrent().getCategoria();
+                    if(nombreCat != null){
+                        for(int i = 0; i < categorias.getItemCount(); i++){
+                            Categoria cat = (Categoria) categorias.getItemAt(i);
+                            if(cat.getNombre().equals(nombreCat)){
+                                categorias.setSelectedIndex(i);
+                                break;
+                            }
+                        }
+                    }
                     if (model.getMode() == Application.MODE_EDIT) {
                         codigo.setEnabled(false);
                         delete.setEnabled(true);
