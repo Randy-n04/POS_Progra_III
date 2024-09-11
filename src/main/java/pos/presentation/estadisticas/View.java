@@ -12,5 +12,6 @@ public class View {
     private JComboBox comboBox5;
     private JButton button1;
     private JButton button2;
+    private JScrollPane Detalles;
     private JTable table1;
 }
