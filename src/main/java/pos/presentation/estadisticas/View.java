@@ -14,4 +14,5 @@ public class View {
     private JButton button2;
     private JScrollPane Detalles;
     private JTable table1;
+    private JPanel panel;
 }
