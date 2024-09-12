@@ -15,6 +15,8 @@ public class Producto {
     float precioUnitario;
     int existencias;
     String categoria;
+    private int cantidadComprada;
+
 
     public Producto() {
         this.codigo = "";
@@ -95,4 +97,8 @@ public class Producto {
     public String toString() {
         return descripcion;
     }
+
+    public int getCantidadComprada() {return cantidadComprada;}
+
+    public void setCantidadComprada(int cantidadComprada) {this.cantidadComprada = cantidadComprada;}
 }
