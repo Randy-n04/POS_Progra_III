@@ -114,6 +114,8 @@ public class Factura {
         return Objects.hash(numero);
     }
 
+
+
     @Override
     public String toString() {
         return "Factura{" +

@@ -37,16 +37,16 @@ public class TableModel extends AbstractTableModel<Factura> implements javax.swi
     }
 
     @Override
-    protected void initColNames(){
-        colNames = new String[5];
-        colNames[CODIGO]= "Codigo";
-        colNames[ARTICULO]= "Articulo";
-        colNames[CATEGORIA]= "Categoria";
-        colNames[CANTIDAD]= "Cantidad";
-        colNames[PRECIO]= "Precio";
-        colNames[DESCUENTO]= "Descuento";
-        colNames[NETO]= "Neto";
-        colNames[IMPORTE]= "Importe";
+    protected void initColNames() {
+        colNames = new String[8];
+        colNames[CODIGO] = "Codigo";
+        colNames[ARTICULO] = "Articulo";
+        colNames[CATEGORIA] = "Categoria";
+        colNames[CANTIDAD] = "Cantidad";
+        colNames[PRECIO] = "Precio";
+        colNames[DESCUENTO] = "Descuento";
+        colNames[NETO] = "Neto";
+        colNames[IMPORTE] = "Importe";
     }
 
 }
