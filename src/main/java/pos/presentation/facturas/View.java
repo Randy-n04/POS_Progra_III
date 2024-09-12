@@ -1,13 +1,11 @@
 package pos.presentation.facturas;
 
-import pos.Application;
-import pos.presentation.clientes.Controller;
-import pos.presentation.clientes.Model;
-
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class View {
     private JPanel panel;
@@ -33,42 +31,69 @@ public class View {
     private JButton agregarBtn;
     private JTable productosTbl;
 
-    public JPanel getPanel(){return panel;}
+    private Model model; // Asegúrate de tener esta variable
+    private Controller controller;
 
-    public View(){
+    public JPanel getPanel() { return panel; }
 
+    public View() {
+        // Asignar manejadores de eventos a los botones
+        cobrarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.openCobrarDialog();
+                }
+            }
+        });
+
+        buscarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.openBuscarDialog();
+                }
+            }
+        });
+
+        cantidadBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.openCantidadDialog();
+                }
+            }
+        });
     }
 
-    // MVC
-    pos.presentation.facturas.Model model;
-    pos.presentation.facturas.Controller controller;
-
-    public void setModel(pos.presentation.facturas.Model model) {
+    public void setModel(Model model) {
         this.model = model;
-        model.addPropertyChangeListener(this);
+        model.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                switch (evt.getPropertyName()) {
+                    case Model.LIST:
+                        int[] cols = {TableModel.CODIGO,
+                                TableModel.ARTICULO, TableModel.CATEGORIA,
+                                TableModel.CANTIDAD, TableModel.PRECIO,
+                                TableModel.DESCUENTO, TableModel.NETO,
+                                TableModel.IMPORTE};
+                        productosTbl.setModel(new TableModel(cols, model.getList()));
+                        productosTbl.setRowHeight(30);
+                        TableColumnModel columnModel = productosTbl.getColumnModel();
+                        columnModel.getColumn(1).setPreferredWidth(150);
+                        columnModel.getColumn(3).setPreferredWidth(150);
+                        break;
+                }
+
+                panel.revalidate();
+            }
+        });
     }
 
-    public void setController(pos.presentation.facturas.Controller controller) {
+    public void setController(Controller controller) {
         this.controller = controller;
     }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName()) {
-            case pos.presentation.facturas.Model.LIST:
-                int[] cols = {pos.presentation.facturas.TableModel.CODIGO,
-                        pos.presentation.facturas.TableModel.ARTICULO, pos.presentation.facturas.TableModel.CATEGORIA,
-                        pos.presentation.facturas.TableModel.CANTIDAD, pos.presentation.facturas.TableModel.PRECIO,
-                        pos.presentation.facturas.TableModel.DESCUENTO, pos.presentation.facturas.TableModel.NETO,
-                        pos.presentation.facturas.TableModel.IMPORTE,};
-                productosTbl.setModel(new TableModel(cols, model.getList()));
-                productosTbl.setRowHeight(30);
-                TableColumnModel columnModel = productosTbl.getColumnModel();
-                columnModel.getColumn(1).setPreferredWidth(150);
-                columnModel.getColumn(3).setPreferredWidth(150);
-                break;
-        }
-
-        this.panel.revalidate();
-    }
-
 }
+
+

@@ -13,7 +13,7 @@ public class Cobrar extends JDialog {
     private JTextField sinpe;
     private JLabel sinpeLbl;
     private JLabel chequeLbl;
-    private JLabel TarjetaLbl;
+    private JLabel TarjetaLbl; // Asegúrate de que este nombre coincida con el archivo .form
     private JLabel efectivoLbl;
     private JLabel importe;
 
@@ -34,7 +34,7 @@ public class Cobrar extends JDialog {
             }
         });
 
-        // call onCancel() when cross is clicked
+        // Call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -42,7 +42,7 @@ public class Cobrar extends JDialog {
             }
         });
 
-        // call onCancel() on ESCAPE
+        // Call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -51,13 +51,44 @@ public class Cobrar extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        try {
+            float efectivoValue = Float.parseFloat(efectivo.getText());
+            float tarjetaValue = Float.parseFloat(tarjeta.getText());
+            float chequeValue = Float.parseFloat(cheque.getText());
+            float sinpeValue = Float.parseFloat(sinpe.getText());
+
+            // Aquí puedes agregar la lógica para procesar los datos de pago
+            processPayment(efectivoValue, tarjetaValue, chequeValue, sinpeValue);
+
+            dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
+    }
+
+    private void processPayment(float efectivo, float tarjeta, float cheque, float sinpe) {
+        float totalPago = efectivo + tarjeta + cheque + sinpe;
+        System.out.println("Total de pago: " + totalPago);
+    }
+
+    public float getEfectivo() {
+        return Float.parseFloat(efectivo.getText());
+    }
+
+    public float getTarjeta() {
+        return Float.parseFloat(tarjeta.getText());
+    }
+
+    public float getCheque() {
+        return Float.parseFloat(cheque.getText());
+    }
+
+    public float getSinpe() {
+        return Float.parseFloat(sinpe.getText());
     }
 
     public static void main(String[] args) {
@@ -67,3 +98,4 @@ public class Cobrar extends JDialog {
         System.exit(0);
     }
 }
+

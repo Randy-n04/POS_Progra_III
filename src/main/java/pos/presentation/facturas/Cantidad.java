@@ -10,6 +10,7 @@ public class Cantidad extends JDialog {
     private JLabel cantidadLbl;
     private JTextField textField1;
     private JPanel cantidad;
+    private int cantidadIngresada;
 
     public Cantidad() {
         setContentPane(contentPane);
@@ -45,19 +46,28 @@ public class Cantidad extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        try {
+            cantidadIngresada = Integer.parseInt(textField1.getText());
+            dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
+    }
+
+    public int getCantidadIngresada() {
+        return cantidadIngresada;
     }
 
     public static void main(String[] args) {
         Cantidad dialog = new Cantidad();
         dialog.pack();
         dialog.setVisible(true);
+        System.out.println("Cantidad ingresada: " + dialog.getCantidadIngresada());
         System.exit(0);
     }
 }
+

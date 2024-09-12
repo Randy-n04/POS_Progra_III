@@ -97,6 +97,7 @@
             <precioUnitario>650.0</precioUnitario>
             <existencias>30</existencias>
             <categoria>Lacteos</categoria>
+            <cantidadComprada>0</cantidadComprada>
         </producto>
         <producto>
             <codigo>PRO-002</codigo>
@@ -105,6 +106,7 @@
             <precioUnitario>1500.0</precioUnitario>
             <existencias>10</existencias>
             <categoria>BebidasAlcoholicas</categoria>
+            <cantidadComprada>0</cantidadComprada>
         </producto>
         <producto>
             <codigo>PRO-003</codigo>
@@ -113,6 +115,7 @@
             <precioUnitario>2000.0</precioUnitario>
             <existencias>8</existencias>
             <categoria>Congelados</categoria>
+            <cantidadComprada>0</cantidadComprada>
         </producto>
         <producto>
             <codigo>PRO-004</codigo>
@@ -121,6 +124,7 @@
             <precioUnitario>1200.0</precioUnitario>
             <existencias>20</existencias>
             <categoria>Granos/Legumbres</categoria>
+            <cantidadComprada>0</cantidadComprada>
         </producto>
     </productos>
     <facturas/>
