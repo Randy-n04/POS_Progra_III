@@ -182,11 +182,14 @@ public class Service {
 
     //================= FACTURAS ============
 
-    public void create(Factura e) throws Exception{
-        Factura result = data.getFacturas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
-        if (result == null) data.getFacturas().add(e);
-        else throw new Exception("Factura ya existe");
-    }
+    /*public void create(Factura e) throws Exception{
+        e.setNumero(data.nextFactura());
+        data.getFacturas().add(e);
+        for(Lines l;e.getLines()){
+            l.setFactura(e);
+            this.create(l);
+        }
+    }*/
 
     public Factura read(Factura e) throws Exception{
         Factura result = data.getFacturas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);

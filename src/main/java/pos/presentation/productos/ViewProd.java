@@ -8,12 +8,14 @@ import pos.logic.Producto;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.List;
 
 public class ViewProd implements PropertyChangeListener {
@@ -46,6 +48,30 @@ public class ViewProd implements PropertyChangeListener {
         public JPanel getPanelGen(){return panelGen;}
 
         public ViewProd(){
+            reportDescripcionBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try{
+                        controller.report();
+                        if(Desktop.isDesktopSupported()){
+                            File myFile = new File("productos.pdf");
+                            Desktop.getDesktop().open(myFile);
+                        }
+                    }catch (Exception ex){ }
+                }
+            });
+            reportCodigoBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try{
+                        controller.report();
+                        if(Desktop.isDesktopSupported()) {
+                            File myFile = new File("productos.pdf");
+                            Desktop.getDesktop().open(myFile);
+                        }
+                    }catch (Exception ex){  }
+                }
+            });
             searchDescripcionBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

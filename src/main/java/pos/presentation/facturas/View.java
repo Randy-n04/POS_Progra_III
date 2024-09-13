@@ -64,6 +64,15 @@ public class View {
                 }
             }
         });
+
+        descuentoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.openDescuentoDialog();
+                }
+            }
+        });
     }
 
     public void setModel(Model model) {
