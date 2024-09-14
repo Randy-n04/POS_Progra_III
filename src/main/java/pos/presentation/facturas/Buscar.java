@@ -1,13 +1,21 @@
 package pos.presentation.facturas;
 
-
+import pos.data.Data;
+import pos.Application;
+import pos.logic.Categoria;
+import pos.logic.Linea;
+import pos.presentation.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import pos.logic.Factura;
-import pos.logic.Lines;
+import pos.presentation.productos.*;
+import java.util.List;
+import pos.logic.Producto;
+import pos.logic.Service;
 
 public class Buscar extends JDialog {
     private JPanel contentPane;
@@ -16,10 +24,10 @@ public class Buscar extends JDialog {
     private JTextField descripcion;
     private JTable table1;
     private JLabel descripcionLbl;
-    private Lines lines; // Instancia de Lines
+    private Controller controller;
+    private Service service;
 
-    public Buscar(Lines lines) {
-        this.lines = lines; // Inicializa Lines
+    public Buscar() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -36,7 +44,6 @@ public class Buscar extends JDialog {
             }
         });
 
-        // Call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -44,7 +51,6 @@ public class Buscar extends JDialog {
             }
         });
 
-        // Call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -53,7 +59,7 @@ public class Buscar extends JDialog {
 
         // Configurar la tabla
         table1.setModel(new DefaultTableModel(
-                new Object[]{"Número", "Fecha", "Cajero", "Cliente", "Total"},
+                new Object[]{"Codigo", "Descripcion", "Unidad", "Precio", "Existencias", "Categoria"},
                 0
         ));
     }
@@ -61,7 +67,7 @@ public class Buscar extends JDialog {
     private void onOK() {
         // Llama a la búsqueda
         String textoBusqueda = descripcion.getText();
-        buscarFacturas(textoBusqueda);
+        buscarProductos(textoBusqueda);
     }
 
     private void onCancel() {
@@ -69,23 +75,27 @@ public class Buscar extends JDialog {
         dispose();
     }
 
-    private void buscarFacturas(String textoBusqueda) {
-        List<Factura> resultados = lines.buscarFacturas(textoBusqueda);
+    private void buscarProductos(String textoBusqueda) {
+        List<Producto> resultados = Service.instance().search(new Producto()); // Ajusta según la lógica de búsqueda
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         model.setRowCount(0); // Limpia la tabla
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        for (Factura factura : resultados) {
+        for (Producto producto : resultados) {
             model.addRow(new Object[]{
-                    factura.getNumero(), // Número de la factura
-                    dateFormat.format(factura.getFecha()), // Fecha de la factura
-                    factura.getCajero() != null ? factura.getCajero().toString() : "N/A", // Cajero (ajusta si es necesario)
-                    factura.getCliente() != null ? factura.getCliente().toString() : "N/A", // Cliente (ajusta si es necesario)
-                    factura.getTotal() // Total de la factura
+                    producto.getCodigo(), // Código del producto
+                    producto.getDescripcion(), // Descripción del producto
+                    producto.getUnidadMedida(), // Unidad de medida del producto
+                    producto.getPrecioUnitario(), // Precio del producto
+                    producto.getExistencias(), // Existencias del producto
+                    producto.getCategoria() // Categoría del producto
             });
         }
     }
+    public static void main(String[] args) {
+        Buscar dialog = new Buscar();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.out.println(0);
+        System.exit(0);
+    }
 }
-
-

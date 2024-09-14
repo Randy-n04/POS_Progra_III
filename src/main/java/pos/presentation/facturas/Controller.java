@@ -3,7 +3,7 @@ package pos.presentation.facturas;
 import pos.Application; // Asegúrate de que esta importación sea correcta
 import pos.logic.Factura;
 import pos.logic.Service;
-import pos.logic.Lines; // Asegúrate de que esta importación sea correcta
+import pos.logic.Linea; // Asegúrate de que esta importación sea correcta
 import java.util.List;
 import pos.logic.Cliente;
 import pos.logic.Cajero;
@@ -56,7 +56,7 @@ public class Controller {
             model.setMode(Application.MODE_EDIT);
             model.setCurrent(Service.instance().read(e));
         } catch (Exception ex) {
-            // Manejar excepción
+            ex.printStackTrace();
         }
     }
 
@@ -74,16 +74,14 @@ public class Controller {
         Cobrar dialog = new Cobrar();
         dialog.pack();
         dialog.setVisible(true);
-        // Aquí puedes manejar el pago realizado si es necesario
+
     }
 
     public void openBuscarDialog() {
-        // Asegúrate de pasar una instancia válida de Lines
-        Lines lines = new Lines(); // Asegúrate de que esta instancia sea válida en tu proyecto
-        Buscar dialog = new Buscar(lines);
+        Linea lines = new Linea();
+        Buscar dialog = new Buscar();
         dialog.pack();
         dialog.setVisible(true);
-        // Aquí puedes manejar los resultados de búsqueda si es necesario
     }
 
     public void openCantidadDialog() {
@@ -91,7 +89,6 @@ public class Controller {
         dialog.pack();
         dialog.setVisible(true);
         int cantidad = dialog.getCantidadIngresada();
-        // Aquí puedes manejar la cantidad ingresada si es necesario
     }
 
     public void openDescuentoDialog(){
@@ -99,7 +96,6 @@ public class Controller {
         dialog.pack();
         dialog.setVisible(true);
         float descuento = dialog.getDiscountValue();
-        // Aqui puedes manejar el descuento ingresado si es necesario
     }
 }
 

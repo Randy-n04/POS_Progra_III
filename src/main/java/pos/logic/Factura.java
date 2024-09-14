@@ -14,6 +14,7 @@ import java.util.Objects;
 public class Factura {
     @XmlID
     String numero;
+
     Date fecha;
 
     @XmlIDREF
@@ -75,11 +76,11 @@ public class Factura {
         this.cliente = cliente;
     }
 
-    public List<Producto> getProductos() {
+    public List<Producto> getProducto() {
         return productos;
     }
 
-    public void setProductos(List<Producto> productos) {
+    public void setProducto(List<Producto> productos) {
         this.productos = productos;
     }
 
@@ -123,8 +124,6 @@ public class Factura {
         }
     }
 
-
-
     @Override
     public String toString() {
         return "Factura{" +
@@ -135,4 +134,5 @@ public class Factura {
                 ", total=" + total +
                 '}';
     }
+
 }
