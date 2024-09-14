@@ -1,7 +1,22 @@
 package pos.presentation.cajero;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
 import pos.Application;
 import pos.logic.Cajero;
+import pos.logic.Cliente;
 import pos.logic.Service;
 
 import java.util.List;
@@ -56,8 +71,51 @@ public class Controller {
         model.setCurrent(new Cajero());
     }
 
+    public void report() throws Exception {
+        if (model.getList().isEmpty()) {
+            throw new Exception("No hay clientes disponibles para generar el reporte.");
+        }
+
+        String dest = "cajeros.pdf";
+        PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+        try (PdfWriter writer = new PdfWriter(dest); PdfDocument pdf = new PdfDocument(writer); Document document = new Document(pdf)) {
+            document.setMargins(20, 20, 20, 20);
+
+            Table header = new Table(1);
+            header.setWidth(400);
+            header.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            header.addCell(getCell(new Paragraph("Listado de Cajeros").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false, ColorConstants.WHITE));
+            document.add(header);
+
+            document.add(new Paragraph(""));
+            document.add(new Paragraph(""));
+
+            Color bkg = ColorConstants.LIGHT_GRAY;
+            Color frg = ColorConstants.WHITE;
+            Table body = new Table(2);
+            body.setWidth(400);
+            body.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            body.addCell(getCell(new Paragraph("ID").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Nombre").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+
+            for (Cajero e : model.getList()) {
+                body.addCell(getCell(new Paragraph(e.getId()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getNombre()), TextAlignment.CENTER, true, frg));
+            }
+            document.add(body);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al generar el reporte", e);
+        }
+    }
 
 
-
+    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder, Color bc) {
+        Cell cell = new Cell().add(paragraph);
+        cell.setPadding(0);
+        cell.setTextAlignment(alignment);
+        cell.setBackgroundColor(bc);
+        if (!hasBorder) cell.setBorder(Border.NO_BORDER);
+        return cell;
+    }
 
 }

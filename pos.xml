@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <data>
+    <facturasConsecutivo>1</facturasConsecutivo>
+    <lineasConsecutivo>1</lineasConsecutivo>
     <clientes>
-        <cliente>
-            <id>CLI-111</id>
-            <nombre>Juan</nombre>
-            <telefono>121212</telefono>
-            <email>juan@gmail.com</email>
-            <descuento>2.0</descuento>
-        </cliente>
         <cliente>
             <id>CLI-003</id>
             <nombre>Pedro</nombre>

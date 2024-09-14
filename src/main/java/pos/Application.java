@@ -1,7 +1,6 @@
 package pos;
 
 import pos.logic.Service;
-import pos.presentation.facturas.Controller;
 
 
 import javax.swing.*;
