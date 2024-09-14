@@ -4,6 +4,10 @@ import pos.Application; // Asegúrate de que esta importación sea correcta
 import pos.logic.Factura;
 import pos.logic.Service;
 import pos.logic.Lines; // Asegúrate de que esta importación sea correcta
+import java.util.List;
+import pos.logic.Cliente;
+import pos.logic.Cajero;
+
 
 public class Controller {
     private View view;
@@ -15,7 +19,16 @@ public class Controller {
         this.model = model;
         view.setController(this);
         view.setModel(model);
+
+        // Cargar clientes y cajeros en los combo box
+        List<Cliente> clientes = Service.instance().search(new Cliente());
+        List<Cajero> cajeros = Service.instance().search(new Cajero());
+
+        view.cargarClientes(clientes);  // Llenar el clienteBox con los clientes
+        view.cargarCajeros(cajeros);    // Llenar el cajeroBox con los cajeros
+
     }
+
 
     public void search(Factura filter) throws Exception {
         model.setFilter(filter);
@@ -80,6 +93,7 @@ public class Controller {
         int cantidad = dialog.getCantidadIngresada();
         // Aquí puedes manejar la cantidad ingresada si es necesario
     }
+
 }
 
 
