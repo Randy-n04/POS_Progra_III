@@ -5,14 +5,19 @@ import javax.swing.*;
 public class View {
     private JPanel Datos;
     private JPanel Grafico;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
-    private JComboBox comboBox4;
-    private JComboBox comboBox5;
-    private JButton button1;
-    private JButton button2;
+    private JComboBox InicioAño;
+    private JComboBox InicioFecha;
+    private JComboBox FinalAño;
+    private JComboBox FinalFecha;
+    private JComboBox Categorias;
     private JScrollPane Detalles;
-    private JTable table1;
+    private JTable list;
     private JPanel panel;
+    private JLabel InicioLbl;
+    private JLabel FinalLbl;
+    private JLabel CategoriaLbl;
+    private JButton check2;
+    private JButton check;
+    private JButton menos2;
+    private JButton menos;
 }
