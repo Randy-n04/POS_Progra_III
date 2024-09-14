@@ -1,5 +1,5 @@
 package pos;
-
+//prueba y error
 import pos.logic.Service;
 import pos.presentation.facturas.Controller;
 
