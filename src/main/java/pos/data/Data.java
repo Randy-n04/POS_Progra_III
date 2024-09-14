@@ -3,12 +3,16 @@ package pos.data;
 import pos.logic.*;
 import jakarta.xml.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Data {
+    private Integer facturasConsecutivo = 1;
+    private Integer lineasConsecutivo = 1;
+
     //-------------CLIENTES-------------
     @XmlElementWrapper(name = "clientes")
     @XmlElement(name = "cliente")
@@ -40,6 +44,16 @@ public class Data {
         categorias = new ArrayList<>();
         productos = new ArrayList<>();
         facturas = new ArrayList<>();
+    }
+
+    public String nextFactura(){
+        DecimalFormat df = new DecimalFormat("000000");
+        return "FAC-" + df.format(facturasConsecutivo++);
+    }
+
+    public String nextLinea(){
+        DecimalFormat df = new DecimalFormat("000000");
+        return "LIN-" + df.format(lineasConsecutivo++);
     }
     
     public List<Cliente> getClientes() {

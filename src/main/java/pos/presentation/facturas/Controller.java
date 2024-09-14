@@ -40,7 +40,7 @@ public class Controller {
     public void save(Factura e) throws Exception {
         switch (model.getMode()) {
             case Application.MODE_CREATE:
-                Service.instance().create(e);
+                Service.instance().create(e.getCliente());
                 break;
             case Application.MODE_EDIT:
                 Service.instance().update(e);
@@ -94,6 +94,13 @@ public class Controller {
         // Aquí puedes manejar la cantidad ingresada si es necesario
     }
 
+    public void openDescuentoDialog(){
+        Descuento dialog = new Descuento();
+        dialog.pack();
+        dialog.setVisible(true);
+        float descuento = dialog.getDiscountValue();
+        // Aqui puedes manejar el descuento ingresado si es necesario
+    }
 }
 
 

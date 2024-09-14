@@ -71,7 +71,14 @@ public class View {
             }
         });
 
-
+        descuentoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.openDescuentoDialog();
+                }
+            }
+        });
     }
 
     // Método para cargar clientes en el JComboBox clienteBox
@@ -88,6 +95,7 @@ public class View {
         for (Cajero cajero : cajeros) {
             cajeroBox.addItem(cajero);  // Agregar cada cajero al JComboBox
         }
+      
     }
 
     // Método para actualizar el JTextField con los productos
