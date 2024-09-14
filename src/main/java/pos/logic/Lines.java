@@ -27,6 +27,7 @@ public class Lines {
         this.facturas = facturas;
     }
 
+
     public void addFactura(Factura factura) {
         this.facturas.add(factura);
     }

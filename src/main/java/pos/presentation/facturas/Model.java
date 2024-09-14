@@ -5,12 +5,21 @@ import pos.logic.Factura;
 import pos.presentation.AbstractModel;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import pos.logic.Producto;
+import pos.logic.Lines;
+import java.util.ArrayList;
 
 public class Model extends AbstractModel {
-    Factura filter;
-    List<Factura> list;
-    Factura current;
-    int mode;
+    private Factura filter;
+    private List<Factura> list;
+    private Factura current;
+    private List<Producto> productos;
+    private Lines lines; // Asegúrate de que esto se inicializa correctamente
+    private int mode;
+
+    public Model() {
+        this.lines = new Lines(); // Inicializar Lines
+    }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -20,13 +29,12 @@ public class Model extends AbstractModel {
         firePropertyChange(FILTER);
     }
 
-    public Model() {}
-
     public void init(List<Factura> list) {
         this.list = list;
         this.current = new Factura();
         this.filter = new Factura();
         this.mode = Application.MODE_CREATE;
+        // No necesitas inicializar lines aquí si ya está inicializado en el constructor
     }
 
     public List<Factura> getList() {
@@ -68,6 +76,28 @@ public class Model extends AbstractModel {
     public static final String CURRENT = "current";
     public static final String FILTER = "filter";
 
-    public void addPropertyChangeListener(View view) {
+    public void addProducto(Producto producto) {
+        if (productos == null) {
+            productos = new ArrayList<>();
+        }
+        productos.add(producto);
+        firePropertyChange(LIST);  // Notifica cambios en la lista de productos
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+        firePropertyChange(LIST);  // Notifica cambios en la lista de productos
+    }
+
+    public Lines getLines() {
+        return lines;
+    }
+
+    public void setLines(Lines lines) {
+        this.lines = lines;
     }
 }
