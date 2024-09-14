@@ -115,6 +115,15 @@ public class Factura {
     }
 
 
+    public void agregarProducto(Producto producto, int cantidad) {
+        if (producto != null && cantidad > 0) {
+            producto.setCantidadComprada(cantidad);
+            this.productos.add(producto);
+            calcularTotal();
+        }
+    }
+
+
 
     @Override
     public String toString() {
