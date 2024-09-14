@@ -85,12 +85,12 @@ public class ControllerProd {
         String dest = "productos.pdf";
         PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
         try (PdfWriter writer = new PdfWriter(dest); PdfDocument pdf = new PdfDocument(writer); Document document = new Document(pdf)) {
-            document.setMargins(20, 20, 20, 20);
+            document.setMargins(20, 10, 20, 10);
 
             Table header = new Table(1);
             header.setWidth(400);
             header.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            header.addCell(getCell(new Paragraph("Listado de Productos").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false));
+            header.addCell(getCell(new Paragraph("Listado de Productos").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false, ColorConstants.WHITE));
             document.add(header);
 
             document.add(new Paragraph(""));
@@ -101,20 +101,20 @@ public class ControllerProd {
             Table body = new Table(6);
             body.setWidth(400);
             body.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            body.addCell(getCell(new Paragraph("Codigo").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Descripcion").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Unidad de medida").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Precio unitario").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Existencias").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Categoria").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
+            body.addCell(getCell(new Paragraph("Codigo").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Descripcion").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Unidad de medida").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Precio unitario").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Existencias").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Categoria").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
 
             for (Producto e : model.getList()) {
-                body.addCell(getCell(new Paragraph(e.getCodigo()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getDescripcion()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getUnidadMedida()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getPrecioUnitario())), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getExistencias())), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getCategoria()), TextAlignment.CENTER, true));
+                body.addCell(getCell(new Paragraph(e.getCodigo()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getDescripcion()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getUnidadMedida()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(String.valueOf(e.getPrecioUnitario())), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(String.valueOf(e.getExistencias())), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getCategoria()), TextAlignment.CENTER, true, frg));
             }
             document.add(body);
         } catch (Exception e) {
@@ -122,10 +122,11 @@ public class ControllerProd {
         }
     }
 
-    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder) {
+    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder, Color bc) {
         Cell cell = new Cell().add(paragraph);
         cell.setPadding(0);
         cell.setTextAlignment(alignment);
+        cell.setBackgroundColor(bc);
         if (!hasBorder) cell.setBorder(Border.NO_BORDER);
         return cell;
     }

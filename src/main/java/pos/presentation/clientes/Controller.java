@@ -85,7 +85,7 @@ public class Controller {
             Table header = new Table(1);
             header.setWidth(400);
             header.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            header.addCell(getCell(new Paragraph("Listado de Clientes").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false));
+            header.addCell(getCell(new Paragraph("Listado de Clientes").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false, ColorConstants.WHITE));
             document.add(header);
 
             document.add(new Paragraph(""));
@@ -96,18 +96,18 @@ public class Controller {
             Table body = new Table(5);
             body.setWidth(400);
             body.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            body.addCell(getCell(new Paragraph("ID").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Nombre").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Telefono").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Email").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
-            body.addCell(getCell(new Paragraph("Descuento").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true));
+            body.addCell(getCell(new Paragraph("ID").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Nombre").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Telefono").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Email").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            body.addCell(getCell(new Paragraph("Descuento").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
 
             for (Cliente e : model.getList()) {
-                body.addCell(getCell(new Paragraph(e.getId()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getNombre()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getTelefono()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(e.getEmail()), TextAlignment.CENTER, true));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getDescuento())), TextAlignment.CENTER, true));
+                body.addCell(getCell(new Paragraph(e.getId()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getNombre()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getTelefono()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(e.getEmail()), TextAlignment.CENTER, true, frg));
+                body.addCell(getCell(new Paragraph(String.valueOf(e.getDescuento())), TextAlignment.CENTER, true, frg));
             }
             document.add(body);
         } catch (Exception e) {
@@ -116,10 +116,11 @@ public class Controller {
     }
 
 
-    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder) {
+    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder, Color bc) {
         Cell cell = new Cell().add(paragraph);
         cell.setPadding(0);
         cell.setTextAlignment(alignment);
+        cell.setBackgroundColor(bc);
         if (!hasBorder) cell.setBorder(Border.NO_BORDER);
         return cell;
     }
