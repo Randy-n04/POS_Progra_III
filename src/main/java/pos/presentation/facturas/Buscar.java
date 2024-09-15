@@ -1,6 +1,5 @@
 package pos.presentation.facturas;
 
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
@@ -8,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import pos.logic.Factura;
 import pos.logic.Lines;
+import pos.logic.Producto;
 
 public class Buscar extends JDialog {
     private JPanel contentPane;
@@ -17,9 +17,12 @@ public class Buscar extends JDialog {
     private JTable table1;
     private JLabel descripcionLbl;
     private Lines lines; // Instancia de Lines
+    private Model model; // Referencia al model
+    private Controller controller; // Variable de instancia para el controlador
 
-    public Buscar(Lines lines) {
+    public Buscar(Lines lines, Model model) {
         this.lines = lines; // Inicializa Lines
+        this.model = model; // Inicializa el Model
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -56,6 +59,15 @@ public class Buscar extends JDialog {
                 new Object[]{"Número", "Fecha", "Cajero", "Cliente", "Total"},
                 0
         ));
+
+        // Agregar el MouseListener para manejar el doble clic
+        table1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    onProductoSeleccionado();
+                }
+            }
+        });
     }
 
     private void onOK() {
@@ -80,12 +92,34 @@ public class Buscar extends JDialog {
             model.addRow(new Object[]{
                     factura.getNumero(), // Número de la factura
                     dateFormat.format(factura.getFecha()), // Fecha de la factura
-                    factura.getCajero() != null ? factura.getCajero().toString() : "N/A", // Cajero (ajusta si es necesario)
-                    factura.getCliente() != null ? factura.getCliente().toString() : "N/A", // Cliente (ajusta si es necesario)
-                    factura.getTotal() // Total de la factura
+                    factura.getCajero() != null ? factura.getCajero().toString() : "N/A", // Cajero
+                    factura.getCliente() != null ? factura.getCliente().toString() : "N/A", // Cliente
+                    factura.getTotal() // Total
             });
         }
     }
+
+    private void onProductoSeleccionado() {
+        int selectedRow = table1.getSelectedRow();
+        if (selectedRow >= 0) {
+            // Obtener el producto seleccionado
+            Factura facturaSeleccionada = lines.getFacturas().get(selectedRow);
+            Producto producto = facturaSeleccionada.getProductos().get(0); // Asumiendo que quieres el primer producto
+
+            // Agregar el producto al modelo
+            model.addProducto(producto);
+
+            // Cerrar el diálogo
+            dispose();
+        }
+    }
+
+    // Método para establecer el controlador
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
 }
+
+
 
 

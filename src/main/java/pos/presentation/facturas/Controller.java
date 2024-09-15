@@ -7,6 +7,7 @@ import pos.logic.Lines; // Asegúrate de que esta importación sea correcta
 import java.util.List;
 import pos.logic.Cliente;
 import pos.logic.Cajero;
+import pos.logic.Producto;
 
 
 public class Controller {
@@ -77,14 +78,6 @@ public class Controller {
         // Aquí puedes manejar el pago realizado si es necesario
     }
 
-    public void openBuscarDialog() {
-        // Asegúrate de pasar una instancia válida de Lines
-        Lines lines = new Lines(); // Asegúrate de que esta instancia sea válida en tu proyecto
-        Buscar dialog = new Buscar(lines);
-        dialog.pack();
-        dialog.setVisible(true);
-        // Aquí puedes manejar los resultados de búsqueda si es necesario
-    }
 
     public void openCantidadDialog() {
         Cantidad dialog = new Cantidad();
@@ -101,6 +94,20 @@ public class Controller {
         float descuento = dialog.getDiscountValue();
         // Aqui puedes manejar el descuento ingresado si es necesario
     }
+
+    // Método para agregar productos desde la búsqueda
+    public void agregarProductoDesdeBusqueda(Producto producto) {
+        model.addProducto(producto);  // Agrega el producto al modelo
+        view.actualizarTextoProductos();  // Actualiza el texto del JTextField con los productos
+    }
+
+
+    public void openBuscarDialog() {
+        Buscar buscarDialog = new Buscar(model.getLines(), model); // Pasar ambos parámetros
+        buscarDialog.setController(this);  // Pasa el controlador al diálogo de búsqueda
+        buscarDialog.setVisible(true);
+    }
+
 }
 
 
