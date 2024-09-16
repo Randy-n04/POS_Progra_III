@@ -60,6 +60,14 @@ public class Model extends AbstractModel {
         this.mode = mode;
     }
 
+    public List<Cajero> getCajeros() { return cajeros; }
+
+    public void setCajeros(List<Cajero> cajeros){ this.cajeros = cajeros; firePropertyChange(CAJEROS); }
+
+    public List<Cliente> getClientes() { return clientes; }
+
+    public void setClientes(List <Cliente> clientes){ this.clientes = clientes; firePropertyChange(CLIENTES); }
+
     public static final String LIST = "list";
     public static final String CURRENT = "current";
     public static final String FILTER = "filter";
