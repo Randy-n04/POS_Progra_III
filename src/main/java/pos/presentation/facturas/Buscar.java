@@ -1,21 +1,13 @@
 package pos.presentation.facturas;
 
-import pos.data.Data;
-import pos.Application;
-import pos.logic.Categoria;
-import pos.logic.Linea;
-import pos.presentation.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import pos.presentation.productos.*;
-import java.util.List;
+import pos.logic.Factura;
+import pos.logic.Lines;
 import pos.logic.Producto;
-import pos.logic.Service;
 
 public class Buscar extends JDialog {
     private JPanel contentPane;
@@ -24,10 +16,13 @@ public class Buscar extends JDialog {
     private JTextField descripcion;
     private JTable table1;
     private JLabel descripcionLbl;
-    private Controller controller;
-    private Service service;
+    private Lines lines; // Instancia de Lines
+    private Model model; // Referencia al model
+    private Controller controller; // Variable de instancia para el controlador
 
-    public Buscar() {
+    public Buscar(Lines lines, Model model) {
+        this.lines = lines; // Inicializa Lines
+        this.model = model; // Inicializa el Model
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -44,6 +39,7 @@ public class Buscar extends JDialog {
             }
         });
 
+        // Call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -51,6 +47,7 @@ public class Buscar extends JDialog {
             }
         });
 
+        // Call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -59,15 +56,24 @@ public class Buscar extends JDialog {
 
         // Configurar la tabla
         table1.setModel(new DefaultTableModel(
-                new Object[]{"Codigo", "Descripcion", "Unidad", "Precio", "Existencias", "Categoria"},
+                new Object[]{"Número", "Fecha", "Cajero", "Cliente", "Total"},
                 0
         ));
+
+        // Agregar el MouseListener para manejar el doble clic
+        table1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    onProductoSeleccionado();
+                }
+            }
+        });
     }
 
     private void onOK() {
         // Llama a la búsqueda
         String textoBusqueda = descripcion.getText();
-        buscarProductos(textoBusqueda);
+        buscarFacturas(textoBusqueda);
     }
 
     private void onCancel() {
@@ -75,27 +81,45 @@ public class Buscar extends JDialog {
         dispose();
     }
 
-    private void buscarProductos(String textoBusqueda) {
-        List<Producto> resultados = Service.instance().search(new Producto()); // Ajusta según la lógica de búsqueda
+    private void buscarFacturas(String textoBusqueda) {
+        List<Factura> resultados = lines.buscarFacturas(textoBusqueda);
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         model.setRowCount(0); // Limpia la tabla
 
-        for (Producto producto : resultados) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        for (Factura factura : resultados) {
             model.addRow(new Object[]{
-                    producto.getCodigo(), // Código del producto
-                    producto.getDescripcion(), // Descripción del producto
-                    producto.getUnidadMedida(), // Unidad de medida del producto
-                    producto.getPrecioUnitario(), // Precio del producto
-                    producto.getExistencias(), // Existencias del producto
-                    producto.getCategoria() // Categoría del producto
+                    factura.getNumero(), // Número de la factura
+                    dateFormat.format(factura.getFecha()), // Fecha de la factura
+                    factura.getCajero() != null ? factura.getCajero().toString() : "N/A", // Cajero
+                    factura.getCliente() != null ? factura.getCliente().toString() : "N/A", // Cliente
+                    factura.getTotal() // Total
             });
         }
     }
-    public static void main(String[] args) {
-        Buscar dialog = new Buscar();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.out.println(0);
-        System.exit(0);
+
+    private void onProductoSeleccionado() {
+        int selectedRow = table1.getSelectedRow();
+        if (selectedRow >= 0) {
+            // Obtener el producto seleccionado
+            Factura facturaSeleccionada = lines.getFacturas().get(selectedRow);
+            Producto producto = facturaSeleccionada.getProductos().get(0); // Asumiendo que quieres el primer producto
+
+            // Agregar el producto al modelo
+            model.addProducto(producto);
+
+            // Cerrar el diálogo
+            dispose();
+        }
+    }
+
+    // Método para establecer el controlador
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }
+
+
+
+

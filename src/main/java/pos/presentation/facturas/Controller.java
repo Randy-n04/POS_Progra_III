@@ -3,10 +3,11 @@ package pos.presentation.facturas;
 import pos.Application; // Asegúrate de que esta importación sea correcta
 import pos.logic.Factura;
 import pos.logic.Service;
-import pos.logic.Linea; // Asegúrate de que esta importación sea correcta
+import pos.logic.Lines; // Asegúrate de que esta importación sea correcta
 import java.util.List;
 import pos.logic.Cliente;
 import pos.logic.Cajero;
+import pos.logic.Producto;
 
 
 public class Controller {
@@ -56,7 +57,7 @@ public class Controller {
             model.setMode(Application.MODE_EDIT);
             model.setCurrent(Service.instance().read(e));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            // Manejar excepción
         }
     }
 
@@ -74,21 +75,16 @@ public class Controller {
         Cobrar dialog = new Cobrar();
         dialog.pack();
         dialog.setVisible(true);
-
+        // Aquí puedes manejar el pago realizado si es necesario
     }
 
-    public void openBuscarDialog() {
-        Linea lines = new Linea();
-        Buscar dialog = new Buscar();
-        dialog.pack();
-        dialog.setVisible(true);
-    }
 
     public void openCantidadDialog() {
         Cantidad dialog = new Cantidad();
         dialog.pack();
         dialog.setVisible(true);
         int cantidad = dialog.getCantidadIngresada();
+        // Aquí puedes manejar la cantidad ingresada si es necesario
     }
 
     public void openDescuentoDialog(){
@@ -96,7 +92,22 @@ public class Controller {
         dialog.pack();
         dialog.setVisible(true);
         float descuento = dialog.getDiscountValue();
+        // Aqui puedes manejar el descuento ingresado si es necesario
     }
+
+    // Método para agregar productos desde la búsqueda
+    public void agregarProductoDesdeBusqueda(Producto producto) {
+        model.addProducto(producto);  // Agrega el producto al modelo
+        view.actualizarTextoProductos();  // Actualiza el texto del JTextField con los productos
+    }
+
+
+    public void openBuscarDialog() {
+        Buscar buscarDialog = new Buscar(model.getLines(), model); // Pasar ambos parámetros
+        buscarDialog.setController(this);  // Pasa el controlador al diálogo de búsqueda
+        buscarDialog.setVisible(true);
+    }
+
 }
 
 
