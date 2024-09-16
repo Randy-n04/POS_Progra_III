@@ -78,6 +78,9 @@ public class Service {
         }
     }
 
+    public List<Cliente> getClientes() {
+        return data.getClientes();
+    }
 
 //================= CAJEROS ============
     public void create(Cajero e) throws Exception{
@@ -123,6 +126,10 @@ public class Service {
         }
     }
 
+    public List<Cajero> getCajeros() {
+        return data.getCajeros();
+    }
+
 //================= CATEGORIAS ============
     public void create(Categoria e) throws Exception{
         Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
@@ -135,6 +142,11 @@ public class Service {
         if (result!=null) return result;
         else throw new Exception("Categoria no existe");
     }
+
+    public List<Categoria> getCategorias() {
+        return data.getCategorias();  // Retorna la lista completa de productos
+    }
+
 
 //================= PRODUCTOS ============
     public void create(Producto e) throws Exception{
@@ -178,6 +190,10 @@ public class Service {
                     .sorted(Comparator.comparing(Producto::getDescripcion))
                     .collect(Collectors.toList());
         }
+    }
+
+    public List<Producto> getProductos(){
+        return data.getProductos();
     }
 
     //================= FACTURAS ============
@@ -224,6 +240,10 @@ public class Service {
         }
     }
 
+    public List<Factura> getFacturas(){
+        return data.getFacturas();
+    }
+
     //================= LINEAS ===================
     public void create(Linea e) throws Exception{
         Linea result = data.getLineas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
@@ -265,6 +285,10 @@ public class Service {
                     .sorted(Comparator.comparing(f -> f.getProducto().getCodigo()))
                     .collect(Collectors.toList());
         }
+    }
+
+    public List<Linea> getLineas(){
+        return data.getLineas();
     }
 
 

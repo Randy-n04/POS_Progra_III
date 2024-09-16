@@ -25,17 +25,18 @@ public class Linea {
         producto = new Producto();
         cantidad = 0;
         descuento = 0;
-        neto = 0;
-        importe = 0;
+        neto = calcularNeto();
+        importe = calcularImporte();
     }
-    public Linea(String numero,Producto producto, int cantidad, float descuento, float neto, float importe) {
+    public Linea(String numero,Producto producto, int cantidad, float descuento) {
         this.numero = numero;
         this.producto = producto;
         this.cantidad = cantidad;
         this.descuento = descuento;
-        this.neto = neto;
-        this.importe = importe;
+        this.neto = calcularNeto();
+        this.importe = calcularImporte();
     }
+
     public String getNumero() {return numero;}
     public Producto getProducto() {return producto;}
     public int getCantidad() {return cantidad;}
@@ -43,12 +44,21 @@ public class Linea {
     public float getNeto() {return neto;}
     public float getImporte() {return importe;}
 
-    public void setNumero(String numero) {this.numero = numero;}
+    public void setNumero(String numero) {this.numero = "LIN-" + numero;}
     public void setProducto(Producto producto) {this.producto = producto;}
     public void setCantidad(int cantidad) {this.cantidad = cantidad;}
     public void setDescuento(float descuento) {this.descuento = descuento;}
-    public void setNeto(float neto) {this.neto = neto;}
-    public void setImporte(float importe) {this.importe = importe;}
+    public void setNeto(float neto) {this.neto = calcularNeto();}
+    public void setImporte(float importe) {this.importe = calcularImporte();}
+
+
+    public float calcularNeto() {
+        return producto.getPrecioUnitario() * this.cantidad;
+    }
+
+    public float calcularImporte() {
+        return (neto) - (neto * (descuento / 100));
+    }
 
     public String toString(){
         return numero;

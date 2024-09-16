@@ -1,16 +1,18 @@
 package pos.presentation.facturas;
+import pos.data.*;
+import pos.logic.*;
 
+import pos.presentation.facturas.*;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import pos.logic.Cliente;
-import pos.logic.Cajero;
 
-public class View {
+public class View implements PropertyChangeListener {
     private JPanel panel;
     private JComboBox<Cliente> clienteBox;
     private JLabel clienteIcon;
@@ -35,15 +37,11 @@ public class View {
     private JTable productosTbl;
     private JPanel cajerobox;
 
-    private Model model; // Asegúrate de tener esta variable
-    private Controller controller;
-
     public JPanel getPanel() {
         return panel;
     }
 
     public View() {
-        // Asignar manejadores de eventos a los botones
         cobrarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,70 +79,48 @@ public class View {
         });
     }
 
-    // Método para cargar clientes en el JComboBox clienteBox
     public void cargarClientes(List<Cliente> clientes) {
-        clienteBox.removeAllItems();  // Limpiar cualquier ítem previo
+        clienteBox.removeAllItems();
         for (Cliente cliente : clientes) {
-            clienteBox.addItem(cliente);  // Agregar cada cliente al JComboBox
+            clienteBox.addItem(cliente);
         }
     }
 
-    // Método para cargar cajeros en el JComboBox cajeroBox
     public void cargarCajeros(List<Cajero> cajeros) {
-        cajeroBox.removeAllItems();  // Limpiar cualquier ítem previo
+        cajeroBox.removeAllItems();
         for (Cajero cajero : cajeros) {
-            cajeroBox.addItem(cajero);  // Agregar cada cajero al JComboBox
+            cajeroBox.addItem(cajero);
         }
-      
+
     }
 
-    // Método para actualizar el JTextField con los productos
     public void actualizarTextoProductos() {
-        // Obtén el modelo de la tabla de productos
         TableModel tableModel = (TableModel) productosTbl.getModel();
         StringBuilder productosText = new StringBuilder();
 
-        // Itera sobre las filas de la tabla para construir el texto
         for (int row = 0; row < tableModel.getRowCount(); row++) {
             String codigo = tableModel.getValueAt(row, TableModel.CODIGO).toString();
             String descripcion = tableModel.getValueAt(row, TableModel.ARTICULO).toString();
             productosText.append(codigo).append(" - ").append(descripcion).append("\n");
         }
 
-        // Actualiza el JTextField con el texto de los productos
         textProducto.setText(productosText.toString());
     }
 
-    // Método para configurar el modelo y agregar el PropertyChangeListener
+    Model model;
+    Controller controller;
+
     public void setModel(Model model) {
         this.model = model;
-        model.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (Model.LIST.equals(evt.getPropertyName())) {
-                    int[] cols = {TableModel.CODIGO,
-                            TableModel.ARTICULO, TableModel.CATEGORIA,
-                            TableModel.CANTIDAD, TableModel.PRECIO,
-                            TableModel.DESCUENTO, TableModel.NETO,
-                            TableModel.IMPORTE};
-                    productosTbl.setModel(new TableModel(cols, model.getList()));
-                    productosTbl.setRowHeight(30);
-                    TableColumnModel columnModel = productosTbl.getColumnModel();
-                    columnModel.getColumn(1).setPreferredWidth(150);
-                    columnModel.getColumn(3).setPreferredWidth(150);
-
-                    // Actualiza el JTextField con los productos
-                    actualizarTextoProductos();
-                }
-                panel.revalidate();
-            }
-        });
+        model.addPropertyChangeListener(this);
     }
 
     public void setController(Controller controller) {
         this.controller = controller;
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
 }
-
-
-

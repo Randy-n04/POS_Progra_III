@@ -14,17 +14,10 @@ public class Model extends AbstractModel {
     String[] rows;
     String[] columns;
     float[][] data;
+}
 
     /*@Override
     public void addPropertyChangeListener(Categoria categoria, PropertyChangeListener listener) {
         super.addPropertyChangeListener()
                 firePropertyChange(CATEGORIES )
     }*/
-
-    public TableModel getTableModel(){
-        return new AbstractTableModel() {() {
-            @Override
-                    public int getRowCount
-        }}
-    }
-}
