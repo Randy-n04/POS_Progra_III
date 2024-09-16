@@ -123,5 +123,14 @@
         </producto>
     </productos>
     <facturas/>
-    <lineas/>
+    <lineas>
+        <linea>
+            <numero></numero>
+            <producto>PRO-001</producto>
+            <cantidad>10</cantidad>
+            <descuento>0.0</descuento>
+            <neto>0.0</neto>
+            <importe>0.0</importe>
+        </linea>
+    </lineas>
 </data>

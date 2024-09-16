@@ -26,4 +26,10 @@ public class Buscar extends JDialog  {
             }
         });
     }
+    public static void main(String[] args) {
+        Buscar dialog = new Buscar();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+    }
 }
