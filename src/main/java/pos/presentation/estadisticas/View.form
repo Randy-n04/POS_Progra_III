@@ -26,7 +26,7 @@
               <text value="Desde"/>
             </properties>
           </component>
-          <component id="c212" class="javax.swing.JComboBox" binding="InicioAño">
+          <component id="c212" class="javax.swing.JComboBox" binding="InicioAnno">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -46,7 +46,7 @@
               <text value="Hasta"/>
             </properties>
           </component>
-          <component id="e01d9" class="javax.swing.JComboBox" binding="FinalAño">
+          <component id="e01d9" class="javax.swing.JComboBox" binding="FinalAnno">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -74,7 +74,7 @@
               <model/>
             </properties>
           </component>
-          <component id="7a90a" class="javax.swing.JButton" binding="check2">
+          <component id="7a90a" class="javax.swing.JButton" binding="AgregarTodo">
             <constraints>
               <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -83,7 +83,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="a7213" class="javax.swing.JButton" binding="check">
+          <component id="a7213" class="javax.swing.JButton" binding="Agregar">
             <constraints>
               <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -92,7 +92,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="abbc8" class="javax.swing.JButton" binding="menos">
+          <component id="abbc8" class="javax.swing.JButton" binding="Eliminar">
             <constraints>
               <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -101,7 +101,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="2fe70" class="javax.swing.JButton" binding="menos2">
+          <component id="2fe70" class="javax.swing.JButton" binding="EliminarTodo">
             <constraints>
               <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>

@@ -1,10 +1,4 @@
 package pos.presentation.estadisticas;
 
-public class TableModel {
-
-
-
-
-
-
+public class MatrixDataSet {
 }
