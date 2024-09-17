@@ -32,13 +32,13 @@ public class Controller {
         this.view = view;
         this.model = model;
         view.setController(this);
-        view.setModel(model);
+        view.setModel(this.model);
 
     }
 
     public void actualizarData(){
         Rango r = model.getRango();
-        int colCount = (r.getAnnoHasta().getYear() - r.getAnnoDesde().getYear()) * 12 + r.getMesHasta().getMonth() - r.getMesDesde().getMonth() + 1;
+        int colCount = (r.getAnnoHasta() - r.getAnnoDesde()) * 12 + r.getMesHasta() - r.getMesDesde() + 1;
         int rowCount = model.getcategorias().size();
         String[] cols = new String[colCount];
         for (int i = 0; i < colCount; i++) {
@@ -63,43 +63,6 @@ public class Controller {
     }
 
 
-//
-//    public void search(Cliente filter) throws  Exception{
-//        model.setFilter(filter);
-//        model.setMode(Application.MODE_CREATE);
-//        model.setCurrent(new Cliente());
-//        model.setList(Service.instance().search(model.getFilter()));
-//    }
-//
-//    public void save(Cliente e) throws  Exception{
-//        switch (model.getMode()) {
-//            case Application.MODE_CREATE:
-//                Service.instance().create(e);
-//                break;
-//            case Application.MODE_EDIT:
-//                Service.instance().update(e);
-//                break;
-//        }
-//        model.setFilter(new Cliente());
-//        search(model.getFilter());
-//    }
-//
-//    public void edit(int row){
-//        Cliente e = model.getList().get(row);
-//        try {
-//            model.setMode(Application.MODE_EDIT);
-//            model.setCurrent(Service.instance().read(e));
-//        } catch (Exception ex) {}
-//    }
-//
-//    public void delete() throws Exception {
-//        Service.instance().delete(model.getCurrent());
-//        search(model.getFilter());
-//    }
-//
-//    public void clear() {
-//        model.setMode(Application.MODE_CREATE);
-//        model.setCurrent(new Cliente());
-//    }
+
 
 }

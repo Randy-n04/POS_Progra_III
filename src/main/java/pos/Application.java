@@ -75,7 +75,7 @@ public class Application {
         tabbedPane.addTab("Estadisticas ",estadisticasIcon,estView.getPanel());
 
 
-        window.setSize(900,450);
+        window.setSize(1000,500);
         window.setResizable(false);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setIconImage((new ImageIcon(Application.class.getResource("presentation/icons/icon.png"))).getImage());
