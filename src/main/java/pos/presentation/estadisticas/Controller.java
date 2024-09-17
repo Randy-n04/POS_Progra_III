@@ -46,7 +46,7 @@ public class Controller {
         }
 
     }
-
+    //TODO llenar metodos vacios
     public void add(Categoria c){
 
     }
