@@ -97,6 +97,7 @@ public class Controller {
 
     // Método para agregar productos desde la búsqueda
     public void agregarProductoDesdeBusqueda(Producto producto) {
+
         model.addProducto(producto);  // Agrega el producto al modelo
         view.actualizarTextoProductos();  // Actualiza el texto del JTextField con los productos
     }
@@ -104,6 +105,7 @@ public class Controller {
 
     public void openBuscarDialog() {
         Buscar buscarDialog = new Buscar(model.getLines(), model); // Pasar ambos parámetros
+        buscarDialog.pack();
         buscarDialog.setController(this);  // Pasa el controlador al diálogo de búsqueda
         buscarDialog.setVisible(true);
     }
