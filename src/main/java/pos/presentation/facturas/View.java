@@ -9,6 +9,7 @@ import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class View implements PropertyChangeListener {
@@ -22,7 +23,7 @@ public class View implements PropertyChangeListener {
     private JLabel subtotalLbl;
     private JLabel subtotalResultado;
     private JLabel descuentosLbl;
-    private JLabel descuentosResultados;
+    private JLabel descuentosResultado;
     private JLabel totalLbl;
     private JLabel totalResultado;
     private JButton cobrarBtn;
@@ -36,19 +37,80 @@ public class View implements PropertyChangeListener {
     private JTable productosTbl;
     private JPanel cajerobox;
 
+
     public JPanel getPanel() {
         return panel;
     }
 
     public View() {
-        cobrarBtn.addActionListener(new ActionListener() {
+        agregarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller != null) {
-                    controller.openCobrarDialog();
+                try {
+                    String codigoProd = textProducto.getText();
+                    if(codigoProd.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "Ingrese el codigo de producto");
+                        return;
+                    }
+                    Producto prod = null;
+                    for (Producto producto : Service.instance().getProductos()) {
+                        if (producto.getCodigo().equals(codigoProd)) {
+                            prod = producto;
+                            break;
+                        }
+                    }
+                    if (prod == null) {
+                        JOptionPane.showMessageDialog(null, "El producto no existe");
+                        return;
+                    }
+                    for (Linea linea : model.getList()) {
+                        if (linea.getProducto().getCodigo().equals(prod.getCodigo())) {
+                            JOptionPane.showMessageDialog(null, "El producto ya está agregado.");
+                            return;
+                        }
+                    }
+                    Linea nuevoProd = new Linea();
+                    nuevoProd.setProducto(prod);
+                    model.getList().add(nuevoProd);
+                    model.setList(model.getList());
+                    JOptionPane.showMessageDialog(null, "El producto se agregó...");
+                    textProducto.setText("");
+                    textProducto.requestFocus();
+                    actualizarResultados();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         });
+
+        cobrarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // Verificar que totalResultado no esté vacío
+                    String totalText = totalResultado.getText().trim();
+                    if (totalText.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "El valor del total está vacío.");
+                        return;
+                    }
+
+                    // Reemplazar las comas por puntos si es necesario (dependiendo de la configuración regional)
+                    totalText = totalText.replace(',', '.');
+
+                    // Asegúrate de que el valor sea un número válido
+                    float total = Float.parseFloat(totalText);
+                    if (controller != null) {
+                        controller.openCobrarDialog(total);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El controlador no está disponible.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "El valor del total no es válido. Asegúrate de que sea un número decimal válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
 
         buscarBtn.addActionListener(new ActionListener() {
             @Override
@@ -63,56 +125,80 @@ public class View implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int fila = productosTbl.getSelectedRow();
-                Linea linea = model.getList().get(fila);
-                try {
-                    String cantStr = JOptionPane.showInputDialog(null, "Ingrese la cantidad: ", linea.getCantidad());
-                    int cantInt = Integer.parseInt(cantStr);
-                    if (cantInt > linea.getCantidad()) {
-                        linea.setCantidad(cantInt);
-                        model.setList(model.getList());
-                        productosTbl.revalidate();
-                        productosTbl.repaint();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Cantidad inválida...");
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                if (fila == -1) {
+                    JOptionPane.showMessageDialog(null, "Por favor seleccione un producto");
+                    return;
+                }
+
+                Cantidad dialog = new Cantidad();
+                dialog.pack();
+                dialog.setVisible(true);
+
+                // Obtener la cantidad ingresada
+                int nuevaCantidad = dialog.getCantidadIngresada();
+
+                // Asegúrate de que la cantidad sea válida
+                if (nuevaCantidad > 0) {
+                    Linea linea = model.getList().get(fila);
+                    linea.setCantidad(nuevaCantidad);
+                    model.setList(model.getList());  // Notificar cambios
+                    productosTbl.revalidate();
+                    productosTbl.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cantidad inválida");
                 }
             }
         });
+
+        quitarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int fila = productosTbl.getSelectedRow();
+                if (fila == -1) {
+                    JOptionPane.showMessageDialog(null, "Por favor seleccione un producto");
+                    return;
+                }
+
+                // Confirmación para eliminar el producto
+                int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Eliminar la línea del producto del modelo
+                    model.getList().remove(fila);
+
+                    // Actualizar la lista del modelo y la tabla
+                    model.setList(model.getList());
+                    productosTbl.revalidate();
+                    productosTbl.repaint();
+                }
+            }
+        });
+
 
         descuentoBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller != null) {
-                    controller.openDescuentoDialog();
+                int fila = productosTbl.getSelectedRow();
+                if (fila == -1) {
+                    JOptionPane.showMessageDialog(null, "Por favor seleccione un producto");
+                    return;
                 }
-            }
-        });
 
-        agregarBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String codigoProd = textProducto.getText();
-                    Producto prod = null;
-                    for (Producto producto : Service.instance().getProductos()) {
-                        if (producto.getCodigo().equals(codigoProd)) {
-                            prod = producto;
-                            break;
-                        }
-                    }
-                    if (prod == null) {
-                        JOptionPane.showMessageDialog(null, "El producto no existe");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El producto se agregó...");
-                        Linea nuevoProd = new Linea();
-                        nuevoProd.setProducto(prod);
-                        model.getList().add(nuevoProd);
-                        model.setList(model.getList());
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                Descuento dialog = new Descuento();
+                dialog.pack();
+                dialog.setVisible(true);
+
+                // Obtener la cantidad ingresada
+                float nuevoDescuento = dialog.getDiscountValue();
+
+                // Asegúrate de que la cantidad sea válida
+                if (nuevoDescuento > 0 && nuevoDescuento <= 100) {
+                    Linea linea = model.getList().get(fila);
+                    linea.setDescuento(nuevoDescuento);
+                    model.setList(model.getList());
+                    productosTbl.revalidate();
+                    productosTbl.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cantidad inválida");
                 }
             }
         });
@@ -123,6 +209,20 @@ public class View implements PropertyChangeListener {
                 int row = productosTbl.getSelectedRow();
                 controller.edit(row);
             }
+        });
+
+        cancelarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizar();
+            }
+        });
+
+
+        productosTbl.getSelectionModel().addListSelectionListener(e -> {
+            boolean isSelected = productosTbl.getSelectedRow() != -1; // Verifica si hay una fila seleccionada
+            cantidadBtn.setEnabled(isSelected);
+            descuentoBtn.setEnabled(isSelected);
         });
 
         clienteBox.setEditable(false);
@@ -188,6 +288,58 @@ public class View implements PropertyChangeListener {
         return valid;
     }
 
+    private void actualizar() {
+        model.setList(new ArrayList<>()); // Asegúrate de que la lista nunca sea null
+        productosTbl.setModel(new TableModel(new int[]{
+                TableModel.CODIGO, TableModel.ARTICULO, TableModel.CATEGORIA,
+                TableModel.CANTIDAD, TableModel.PRECIO, TableModel.DESCUENTO,
+                TableModel.NETO, TableModel.IMPORTE
+        }, model.getList())); // Reiniciar la tabla
+        productosTbl.revalidate();
+        productosTbl.repaint();
+
+        // Limpiar el campo de texto del producto
+        textProducto.setText("");
+
+        // Restablecer los JComboBox de clientes y cajeros
+        try {
+            Data data = XmlPersister.instance().load();
+            List<Cliente> clientesData = data.getClientes();
+            List<Cajero> cajeroData = data.getCajeros();
+
+            clienteBox.setModel(new DefaultComboBoxModel<>(clientesData.toArray(new Cliente[0])));
+            cajeroBox.setModel(new DefaultComboBoxModel<>(cajeroData.toArray(new Cajero[0])));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Actualizar el estado de los botones y campos
+        textProducto.setEditable(true);
+        quitarBtn.setEnabled(false);
+    }
+
+    private void actualizarResultados() {
+        int totalArticulos = 0;
+        float totalNeto = 0;
+        float totalDescuentos = 0;
+        float totalImporte = 0;
+
+        for (Linea linea : model.getList()) {
+            totalArticulos += linea.getCantidad();
+            totalNeto += linea.getNeto();
+            totalDescuentos += linea.getDescuento();
+            totalImporte += linea.getImporte();
+        }
+
+        // Asegúrate de que el formato sea correcto
+        articulosResultado.setText(String.valueOf(totalArticulos));
+        subtotalResultado.setText(String.format("%.2f", totalNeto));
+        descuentosResultado.setText(String.format("%.2f", totalDescuentos));
+        totalResultado.setText(String.format("%.2f", totalImporte));
+    }
+
+
+
     // MVC
     Model model;
     Controller controller;
@@ -206,23 +358,27 @@ public class View implements PropertyChangeListener {
         switch (evt.getPropertyName()) {
             case Model.LIST:
                 int[] cols = {TableModel.CODIGO, TableModel.ARTICULO, TableModel.CATEGORIA,
-                TableModel.CANTIDAD, TableModel.PRECIO, TableModel.DESCUENTO,
-                TableModel.NETO, TableModel.IMPORTE};
+                        TableModel.CANTIDAD, TableModel.PRECIO, TableModel.DESCUENTO,
+                        TableModel.NETO, TableModel.IMPORTE};
                 productosTbl.setModel(new TableModel(cols, model.getList()));
                 productosTbl.setRowHeight(30);
                 TableColumnModel columnModel = productosTbl.getColumnModel();
                 columnModel.getColumn(1).setPreferredWidth(150);
+                productosTbl.revalidate();
+                productosTbl.repaint();
+                actualizarResultados();
                 break;
             case Model.CURRENT:
                 cajeroBox.setSelectedItem(model.getCajeros());
                 clienteBox.setSelectedItem(model.getClientes());
                 if(model.getMode() == Application.MODE_EDIT){
-                    textProducto.setEditable(false);
+                    textProducto.setEditable(true);
                     quitarBtn.setEnabled(true);
                 } else{
                     textProducto.setEditable(true);
                     quitarBtn.setEnabled(false);
                 }
+                actualizarResultados();
                 break;
             case Model.CAJEROS:
                 cajeroBox.setModel(new DefaultComboBoxModel<>(model.getCajeros().toArray(new Cajero[0])));
@@ -232,8 +388,11 @@ public class View implements PropertyChangeListener {
                 break;
             case Model.FILTER:
                 textProducto.setText(model.getFilter().getProducto().getCodigo());
+                actualizarResultados();
 
         }
         panel.revalidate();
+        actualizarResultados();
     }
+
 }

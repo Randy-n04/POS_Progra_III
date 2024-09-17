@@ -60,7 +60,7 @@ public class Application {
 
         tabbedPane.addTab("Productos  ",productosIcon,productosView.getPanelGen());
 
-        //----------------------------------------Historiaco----------------------------------------------------
+        //----------------------------------------Historico----------------------------------------------------
         pos.presentation.historico.Model historicoModel = new pos.presentation.historico.Model();
         pos.presentation.historico.View historicoView = new pos.presentation.historico.View();
         historicoController = new pos.presentation.historico.Controller(historicoView, historicoModel);

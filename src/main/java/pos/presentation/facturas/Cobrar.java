@@ -17,14 +17,39 @@ public class Cobrar extends JDialog {
     private JLabel efectivoLbl;
     private JLabel importe;
 
-    public Cobrar() {
+    public Cobrar(float importeTotal) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
+        // Configura el valor del campo Importe
+        importe.setText(String.format("%.2f", importeTotal));
+
         buttonOK.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                try {
+                    // Obtén el valor del importe
+                    float importeFin = Float.parseFloat(importe.getText().trim());
+
+                    // Suma los valores de los JTextField
+                    float efectivoFin = parseFloatSafe(efectivo.getText().trim());
+                    float tarjetaFin = parseFloatSafe(tarjeta.getText().trim());
+                    float chequeFin = parseFloatSafe(cheque.getText().trim());
+                    float sinpeFin = parseFloatSafe(sinpe.getText().trim());
+
+                    float suma = efectivoFin + tarjetaFin + chequeFin + sinpeFin;
+
+                    // Verifica si la suma es igual al importe
+                    if (Math.abs(suma - importeFin) < 0.01) { // Usar una tolerancia para evitar errores de precisión
+                        JOptionPane.showMessageDialog(null, "La suma es correcta.");
+                        onOK(); // Llama al método onOK para procesar el pago
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La suma de los montos no coincide con el importe.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -48,6 +73,12 @@ public class Cobrar extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        // Inicializar los JTextField en 0
+        efectivo.setText("0");
+        tarjeta.setText("0");
+        cheque.setText("0");
+        sinpe.setText("0");
     }
 
     private void onOK() {
@@ -63,6 +94,14 @@ public class Cobrar extends JDialog {
             dispose();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private float parseFloatSafe(String text) {
+        try {
+            return Float.parseFloat(text);
+        } catch (NumberFormatException e) {
+            return 0; // Retorna 0 si hay un error en el formato
         }
     }
 
@@ -90,12 +129,4 @@ public class Cobrar extends JDialog {
     public float getSinpe() {
         return Float.parseFloat(sinpe.getText());
     }
-
-    public static void main(String[] args) {
-        Cobrar dialog = new Cobrar();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }
-

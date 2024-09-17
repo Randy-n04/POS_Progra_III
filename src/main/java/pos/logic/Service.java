@@ -3,7 +3,6 @@ package pos.logic;
 import pos.data.Data;
 import pos.data.XmlPersister;
 
-import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -290,7 +289,5 @@ public class Service {
     public List<Linea> getLineas(){
         return data.getLineas();
     }
-
-
 
 }

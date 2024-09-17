@@ -1,5 +1,4 @@
 package pos.presentation.facturas;
-
 import pos.logic.Factura;
 import pos.logic.Linea;
 import pos.presentation.AbstractTableModel;
@@ -7,7 +6,7 @@ import pos.presentation.AbstractTableModel;
 import java.util.List;
 
 public class TableModel extends AbstractTableModel<Linea> implements javax.swing.table.TableModel {
-    
+
     public static final int CODIGO=0;
     public static final int ARTICULO=1;
     public static final int CATEGORIA =2;

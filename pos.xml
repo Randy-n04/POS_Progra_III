@@ -41,6 +41,18 @@
             <id>CAJ-002</id>
             <nombre>Marta</nombre>
         </cajero>
+        <cajero>
+            <id>CAJ-003</id>
+            <nombre>Dario</nombre>
+        </cajero>
+        <cajero>
+            <id>CAJ-004</id>
+            <nombre>Juan</nombre>
+        </cajero>
+        <cajero>
+            <id>CAJ-005</id>
+            <nombre>Pablo</nombre>
+        </cajero>
     </cajeros>
     <categorias>
         <categoria>
@@ -121,6 +133,15 @@
             <categoria>Granos/Legumbres</categoria>
             <cantidadComprada>0</cantidadComprada>
         </producto>
+        <producto>
+            <codigo>PRO-005</codigo>
+            <descripcion>Vainicas</descripcion>
+            <unidadMedida>Gramos(en bolsa)</unidadMedida>
+            <precioUnitario>500.0</precioUnitario>
+            <existencias>20</existencias>
+            <categoria>Frutas/Verduras</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
     </productos>
     <facturas/>
     <lineas>
@@ -128,9 +149,17 @@
             <numero></numero>
             <producto>PRO-001</producto>
             <cantidad>10</cantidad>
+            <descuento>0.5</descuento>
+            <neto>6500.0</neto>
+            <importe>6467.5</importe>
+        </linea>
+        <linea>
+            <numero></numero>
+            <producto>PRO-002</producto>
+            <cantidad>1</cantidad>
             <descuento>0.0</descuento>
-            <neto>0.0</neto>
-            <importe>0.0</importe>
+            <neto>1500.0</neto>
+            <importe>1500.0</importe>
         </linea>
     </lineas>
 </data>

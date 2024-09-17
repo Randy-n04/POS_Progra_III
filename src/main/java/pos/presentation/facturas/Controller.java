@@ -12,26 +12,26 @@ public class Controller {
     private Model model;
 
     public Controller(View view, Model model) throws Exception {
-       try {
-           List<Linea> lineas = Service.instance().getLineas();
-           List<Cliente> clientes = XmlPersister.instance().load().getClientes();
-           List<Cajero> cajeros = XmlPersister.instance().load().getCajeros();
+        try {
+            List<Linea> lineas = Service.instance().getLineas();
+            List<Cliente> clientes = XmlPersister.instance().load().getClientes();
+            List<Cajero> cajeros = XmlPersister.instance().load().getCajeros();
 
-           if (lineas != null && clientes != null && cajeros != null) {
-               model.init(lineas, clientes, cajeros);
-               if (!lineas.isEmpty()) {
-                   model.setCurrent(lineas.get(0));
-               }
-           } else {
-               System.out.println("listas nulas");
-           }
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       this.view = view;
-       this.model = model;
-       view.setController(this);
-       view.setModel(model);
+            if (lineas != null && clientes != null && cajeros != null) {
+                model.init(lineas, clientes, cajeros);
+                if (!lineas.isEmpty()) {
+                    model.setCurrent(lineas.get(0));
+                }
+            } else {
+                System.out.println("listas nulas");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.view = view;
+        this.model = model;
+        view.setController(this);
+        view.setModel(model);
     }
 
     public void search(Linea filter) throws Exception {
@@ -89,13 +89,12 @@ public class Controller {
         model.setCurrent(new Linea());
     }
 
-    public void openCobrarDialog() {
-        Cobrar dialog = new Cobrar();
+    public void openCobrarDialog(float total) {
+        Cobrar dialog = new Cobrar(total);  // Pasar el total al constructor de Cobrar
         dialog.pack();
         dialog.setVisible(true);
         // Aquí puedes manejar el pago realizado si es necesario
     }
-
 
     public void openCantidadDialog() {
         Cantidad dialog = new Cantidad();
@@ -119,7 +118,4 @@ public class Controller {
         dialog.setVisible(true);
     }
 
-
 }
-
-
