@@ -156,19 +156,19 @@
     <lineas>
         <linea>
             <numero></numero>
-            <producto>PRO-001</producto>
-            <cantidad>10</cantidad>
+            <producto>PRO-002</producto>
+            <cantidad>1</cantidad>
             <descuento>0.5</descuento>
-            <neto>6500.0</neto>
-            <importe>6467.5</importe>
+            <neto>1500.0</neto>
+            <importe>1492.5</importe>
         </linea>
         <linea>
             <numero></numero>
-            <producto>PRO-002</producto>
+            <producto>PRO-001</producto>
             <cantidad>1</cantidad>
-            <descuento>0.0</descuento>
-            <neto>1500.0</neto>
-            <importe>1500.0</importe>
+            <descuento>10.0</descuento>
+            <neto>650.0</neto>
+            <importe>585.0</importe>
         </linea>
     </lineas>
 </data>
