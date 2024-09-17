@@ -9,7 +9,7 @@ public class Descuento extends JDialog {
     private JButton buttonCancel;
     private JTextField descuento;
     private JLabel descuentoLbl;
-    private float discountValue;
+    private float valorDescuento;
 
     public Descuento() {
         setContentPane(contentPane);
@@ -50,7 +50,7 @@ public class Descuento extends JDialog {
                 JOptionPane.showMessageDialog(this, "El descuento debe estar entre 0 y 100", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            processDiscount(descuentoValue);
+            procesoDescuento(descuentoValue);
             dispose();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido", "Error", JOptionPane.ERROR_MESSAGE);
@@ -61,17 +61,13 @@ public class Descuento extends JDialog {
         dispose();
     }
 
-    private void processDiscount(float discountValue) {
-        this.discountValue = discountValue;
-        // Implementa la lógica para notificar al controlador o modelo
-        // Por ejemplo, podrías usar un método de callback o pasar el valor al controlador
-        System.out.println("Descuento procesado: " + discountValue);
-        // Notificar al controlador
-        // controller.setDiscount(discountValue);
-    }
+    private void procesoDescuento(float valor) {
+        this.valorDescuento = valor;
+       System.out.println("Descuento procesado: " + valorDescuento);
+   }
 
     public float getDiscountValue() {
-        return discountValue;
+        return valorDescuento;
     }
 
     public static void main(String[] args) {

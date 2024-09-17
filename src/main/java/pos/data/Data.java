@@ -38,12 +38,18 @@ public class Data {
     @XmlElement(name = "factura")
     private List<Factura> facturas;
 
+    //--------------Lineas--------------
+    @XmlElementWrapper(name = "lineas")
+    @XmlElement(name = "linea")
+    private List<Linea> lineas;
+
     public Data() {
         clientes = new ArrayList<>();
         cajeros = new ArrayList<>();
         categorias = new ArrayList<>();
         productos = new ArrayList<>();
         facturas = new ArrayList<>();
+        lineas = new ArrayList<>();
     }
 
     public String nextFactura(){
@@ -67,5 +73,6 @@ public class Data {
         return productos;
     }
     public List<Factura> getFacturas() { return facturas; }
+    public List<Linea> getLineas() { return lineas; }
 
 }

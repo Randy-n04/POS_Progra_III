@@ -1,10 +1,9 @@
 package pos.logic;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlIDREF;
-import jakarta.xml.bind.annotation.XmlID;
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.Objects;
 public class Factura {
     @XmlID
     String numero;
-    Date fecha;
 
     @XmlIDREF
     Cajero cajero;
@@ -22,25 +20,27 @@ public class Factura {
     @XmlIDREF
     Cliente cliente;
 
-    List<Producto> productos;
-    float total;
+    @XmlElementWrapper(name = "lineas")
+    @XmlElement(name = "linea")
+    List<Linea> lineas;
+
+    //@XmlJavaTypeAdapter(value = LocalDateApapter.class)
+    LocalDate fecha;
 
     public Factura() {
         this.numero = "";
-        this.fecha = new Date();
         this.cajero = null;
         this.cliente = null;
-        this.productos = new ArrayList<>();
-        this.total = 0;
+        this.lineas = new ArrayList<>();;
+        this.fecha = LocalDate.now();
     }
 
-    public Factura(String numero, Date fecha, Cajero cajero, Cliente cliente) {
+    public Factura(String numero, LocalDate fecha, Cajero cajero, Cliente cliente) {
         this.numero = numero;
         this.fecha = fecha;
         this.cajero = cajero;
         this.cliente = cliente;
-        this.productos = new ArrayList<>();
-        this.total = 0;
+        this.lineas = new ArrayList<>();;
     }
 
     public String getNumero() {
@@ -51,11 +51,11 @@ public class Factura {
         this.numero = "FAC-" + numero;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -75,64 +75,20 @@ public class Factura {
         this.cliente = cliente;
     }
 
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
-
-    public float getTotal() {
-        return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
-    }
-
-    public void calcularTotal() {
-        total = 0;
-        for (Producto producto : productos) {
-            total += producto.getPrecioUnitario() * producto.getExistencias();
-        }
-        if (cliente != null) {
-            total -= total * cliente.getDescuento();
-        }
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
         Factura factura = (Factura) o;
-        return Objects.equals(numero, factura.numero);
+        return numero.equals(factura.numero);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(numero);
-    }
-
-
-    public void agregarProducto(Producto producto, int cantidad) {
-        if (producto != null && cantidad > 0) {
-            producto.setCantidadComprada(cantidad);
-            this.productos.add(producto);
-            calcularTotal();
-        }
-    }
-
-
+    public int hashCode(){ return Objects.hash(numero); }
 
     @Override
     public String toString() {
-        return "Factura{" +
-                "numero='" + numero + '\'' +
-                ", fecha=" + fecha +
-                ", cajero=" + cajero +
-                ", cliente=" + cliente +
-                ", total=" + total +
-                '}';
+        return numero;
     }
+
 }

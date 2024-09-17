@@ -21,6 +21,10 @@ public class View {
     private JLabel DoubleClickLbl;
     private JPanel panel;
 
+    public JPanel getPanel() {
+        return panel;
+    }
+
     public View() {
 
 
@@ -28,29 +32,15 @@ public class View {
         list.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) {
                     int row = list.getSelectedRow();
-                    if(row >= 0){
-                     //Factura facturaAt = ;                //No se si esto es del controller, pero falta asignar la factura seleccionada a un nuevo objeto
-                     //JOptionPane.showMessageDialog(panel,facturaAt.toString(),"",JOptionPane.INFORMATION_MESSAGE);
+                    if (row >= 0) {
+                        //Factura facturaAt = ;                //No se si esto es del controller, pero falta asignar la factura seleccionada a un nuevo objeto
+                        //JOptionPane.showMessageDialog(panel,facturaAt.toString(),"",JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+

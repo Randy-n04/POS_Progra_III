@@ -10,7 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 // da
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         }
@@ -60,6 +60,13 @@ public class Application {
 
         tabbedPane.addTab("Productos  ",productosIcon,productosView.getPanelGen());
 
+        //----------------------------------------Historico----------------------------------------------------
+        pos.presentation.historico.Model historicoModel = new pos.presentation.historico.Model();
+        pos.presentation.historico.View historicoView = new pos.presentation.historico.View();
+        historicoController = new pos.presentation.historico.Controller(historicoView, historicoModel);
+        Icon historicoIcon = new ImageIcon(Application.class.getResource("/pos/presentation/icons/historico.png"));
+
+        tabbedPane.addTab("Historico  ", historicoIcon, historicoView.getPanel());
 
         window.setSize(900,450);
         window.setResizable(false);
@@ -76,6 +83,9 @@ public class Application {
     public static pos.presentation.productos.ControllerProd productosController;
 
     public static pos.presentation.facturas.Controller facturasController;
+
+    public static pos.presentation.historico.Controller historicoController;
+
 
 
     public static JFrame window;
