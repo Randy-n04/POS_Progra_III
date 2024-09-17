@@ -41,8 +41,8 @@ public class Controller {
         }
         this.view = view;
         this.model = model;
-        view.setController(this);
-        view.setModel(model);
+       // view.setController(this);
+        //view.setModel(model);
     }
 
     public void search(Factura filter) throws Exception{
@@ -55,8 +55,8 @@ public class Controller {
     public void search(Linea filter) throws Exception{
         model.setFilterLin(filter);
         model.setMode(Application.MODE_CREATE);
-        model.setFilterLin(new Factura());
-        model.setListLin(Service.instance().search(model.getFilterFac()));
+        //model.setFilterLin(new Factura());
+        //model.setListLin(Service.instance().search(model.getFilterFac()));
     }
 
     public void init(){
@@ -70,20 +70,20 @@ public class Controller {
     }
 
     public void editFac(Factura row){
-        Factura e = model.getListFac(Service.instance().read(row));
+        //Factura e = model.getListFac(Service.instance().read(row));
         try{
             model.setMode(Application.MODE_EDIT);
-            model.setCurrentFac(Service.instance().read(e));
+            //model.setCurrentFac(Service.instance().read(e));
         } catch(Exception ex){
             ex.printStackTrace();
         }
     }
 
     public void editLin(Linea row){
-        Linea e = model.getListLin(Service.instance().read(row));
+        //Linea e = model.getListLin(Service.instance().read(row));
         try{
             model.setMode(Application.MODE_EDIT);
-            model.setCurrentLin(Service.instance().read(e));
+        //    model.setCurrentLin(Service.instance().read(e));
         } catch(Exception ex){
             ex.printStackTrace();
         }
