@@ -66,6 +66,7 @@ public class Application {
         historicoController = new pos.presentation.historico.Controller(historicoView, historicoModel);
         Icon historicoIcon = new ImageIcon(Application.class.getResource("/pos/presentation/icons/historico.png"));
 
+        tabbedPane.addTab("Historico  ", historicoIcon, historicoView.getPanel());
 
         window.setSize(900,450);
         window.setResizable(false);

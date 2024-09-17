@@ -142,6 +142,15 @@
             <categoria>Frutas/Verduras</categoria>
             <cantidadComprada>0</cantidadComprada>
         </producto>
+        <producto>
+            <codigo>PRO-006</codigo>
+            <descripcion>Frijoles</descripcion>
+            <unidadMedida>Gramos</unidadMedida>
+            <precioUnitario>3000.0</precioUnitario>
+            <existencias>40</existencias>
+            <categoria>Granos/Legumbres</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
     </productos>
     <facturas/>
     <lineas>
