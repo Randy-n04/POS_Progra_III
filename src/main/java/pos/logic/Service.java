@@ -4,6 +4,7 @@ import pos.data.Data;
 import pos.data.XmlPersister;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -134,6 +135,13 @@ public class Service {
         Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result!=null) return result;
         else throw new Exception("Categoria no existe");
+    }
+    public List<Categoria> search(Categoria e){
+        if (e.getCodigo() != null && !e.getCodigo().isEmpty()) {
+            return data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).collect(Collectors.toList());
+        }else{
+            return new ArrayList<>();
+        }
     }
 
 //================= PRODUCTOS ============
