@@ -56,7 +56,7 @@ public class Controller {
         try {
             switch (model.getMode()) {
                 case Application.MODE_CREATE:
-                    Service.instance().create(e);
+                    Service.instance().create(e.getCliente());
                     break;
                 case Application.MODE_EDIT:
                     Service.instance().update(e);
@@ -64,12 +64,10 @@ public class Controller {
             }
             model.setFilter(new Linea());
             search(model.getFilter());
-        } catch (Exception ex) {
-            ex.printStackTrace();  // Asegúrate de que se manejen correctamente las excepciones
-            throw ex;  // Lanza la excepción para que sea manejada adecuadamente
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
     }
-
 
     public void edit(int row) {
         Linea e = model.getList().get(row);
@@ -90,7 +88,7 @@ public class Controller {
         model.setMode(Application.MODE_CREATE);
         model.setCurrent(new Linea());
     }
-//
+
     public void openCobrarDialog(float total) {
         Cobrar dialog = new Cobrar(total);  // Pasar el total al constructor de Cobrar
         dialog.pack();
@@ -118,19 +116,6 @@ public class Controller {
         Buscar dialog = new Buscar();
         dialog.pack();
         dialog.setVisible(true);
-    // Método para agregar productos desde la búsqueda
-    public void agregarProductoDesdeBusqueda(Producto producto) {
-
-        model.addProducto(producto);  // Agrega el producto al modelo
-        view.actualizarTextoProductos();  // Actualiza el texto del JTextField con los productos
-    }
-
-
-    public void openBuscarDialog() {
-        Buscar buscarDialog = new Buscar(model.getLines(), model); // Pasar ambos parámetros
-        buscarDialog.pack();
-        buscarDialog.setController(this);  // Pasa el controlador al diálogo de búsqueda
-        buscarDialog.setVisible(true);
     }
 
 }
