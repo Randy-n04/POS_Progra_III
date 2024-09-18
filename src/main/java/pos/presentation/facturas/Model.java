@@ -71,7 +71,7 @@ public class Model extends AbstractModel {
     public static final String LIST = "list";
     public static final String CURRENT = "current";
     public static final String FILTER = "filter";
-    public static final String CAJEROS = "cajers";
+    public static final String CAJEROS = "cajeros";
     public static final String CLIENTES = "clientes";
 
 }

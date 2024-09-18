@@ -1,14 +1,17 @@
 package pos.presentation.facturas;
 import pos.Application;
 import pos.data.Data;
+import pos.data.LocalDateAdapter;
 import pos.data.XmlPersister;
 import pos.logic.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,29 +90,26 @@ public class View implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // Verificar que totalResultado no esté vacío
                     String totalText = totalResultado.getText().trim();
                     if (totalText.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "El valor del total está vacío.");
                         return;
                     }
-
-                    // Reemplazar las comas por puntos si es necesario (dependiendo de la configuración regional)
                     totalText = totalText.replace(',', '.');
-
-                    // Asegúrate de que el valor sea un número válido
                     float total = Float.parseFloat(totalText);
-                    if (controller != null) {
-                        controller.openCobrarDialog(total);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El controlador no está disponible.");
+                    Cobrar dialog = new Cobrar(total);
+                    dialog.pack();
+                    dialog.setVisible(true);
+                    if (dialog.isPagoRealizado()) {
+                        guardarFactura();
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "El valor del total no es válido. Asegúrate de que sea un número decimal válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "El valor del total no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la factura: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
 
 
         buscarBtn.addActionListener(new ActionListener() {
@@ -288,6 +288,18 @@ public class View implements PropertyChangeListener {
         return valid;
     }
 
+    private void guardarFactura() {
+        try {
+            Factura factura = takeFactura();
+            controller.save(factura);
+            JOptionPane.showMessageDialog(null, "Factura guardada exitosamente.");
+            actualizar();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar la factura: " + ex.getMessage());
+        }
+    }
+
+
     private void actualizar() {
         model.setList(new ArrayList<>()); // Asegúrate de que la lista nunca sea null
         productosTbl.setModel(new TableModel(new int[]{
@@ -338,6 +350,42 @@ public class View implements PropertyChangeListener {
         totalResultado.setText(String.format("%.2f", totalImporte));
     }
 
+    public Factura takeFactura() {
+        Factura factura = new Factura();
+        factura.setCliente((Cliente) clienteBox.getSelectedItem());
+        factura.setCajero((Cajero) cajeroBox.getSelectedItem());
+        factura.setFecha(LocalDate.now());
+
+        TableModel tableModel = (TableModel) productosTbl.getModel();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            Linea linea = new Linea();
+            String codigoProd = (String) tableModel.getValueAt(i, TableModel.CODIGO);
+            int cantidad = (Integer) tableModel.getValueAt(i, TableModel.CANTIDAD);
+            float precio = (Float) tableModel.getValueAt(i, TableModel.PRECIO);
+            float descuento = (Float) tableModel.getValueAt(i, TableModel.DESCUENTO);
+
+            Producto producto = getProductoPorCodigo(codigoProd);
+            if (producto != null) {
+                linea.setProducto(producto);
+                linea.setCantidad(cantidad);
+                linea.setNeto(precio);
+                linea.setDescuento(descuento);
+                linea.setImporte(precio * cantidad - descuento);
+                factura.getLineas().add(linea);
+            }
+        }
+        return factura;
+    }
+
+
+    private Producto getProductoPorCodigo(String codigo) {
+        for (Producto producto : Service.instance().getProductos()) {
+            if (producto.getCodigo().equals(codigo)) {
+                return producto;  // Devuelve el producto si coincide el código
+            }
+        }
+        return null;  // Devuelve null si no se encuentra el producto
+    }
 
 
     // MVC

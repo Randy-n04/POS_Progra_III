@@ -56,7 +56,7 @@ public class Controller {
         try {
             switch (model.getMode()) {
                 case Application.MODE_CREATE:
-                    Service.instance().create(e.getCliente());
+                    Service.instance().create(e);
                     break;
                 case Application.MODE_EDIT:
                     Service.instance().update(e);
@@ -64,10 +64,12 @@ public class Controller {
             }
             model.setFilter(new Linea());
             search(model.getFilter());
-        } catch(Exception ex){
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();  // Asegúrate de que se manejen correctamente las excepciones
+            throw ex;  // Lanza la excepción para que sea manejada adecuadamente
         }
     }
+
 
     public void edit(int row) {
         Linea e = model.getList().get(row);

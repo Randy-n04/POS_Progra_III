@@ -152,23 +152,22 @@
             <cantidadComprada>0</cantidadComprada>
         </producto>
     </productos>
-    <facturas/>
     <lineas>
-        <linea>
-            <numero></numero>
-            <producto>PRO-002</producto>
-            <cantidad>1</cantidad>
-            <descuento>0.5</descuento>
-            <neto>1500.0</neto>
-            <importe>1492.5</importe>
-        </linea>
         <linea>
             <numero></numero>
             <producto>PRO-001</producto>
             <cantidad>1</cantidad>
-            <descuento>10.0</descuento>
+            <descuento>0.0</descuento>
             <neto>650.0</neto>
-            <importe>585.0</importe>
+            <importe>650.0</importe>
+        </linea>
+        <linea>
+            <numero></numero>
+            <producto>PRO-002</producto>
+            <cantidad>1</cantidad>
+            <descuento>0.0</descuento>
+            <neto>1500.0</neto>
+            <importe>1500.0</importe>
         </linea>
     </lineas>
 </data>
