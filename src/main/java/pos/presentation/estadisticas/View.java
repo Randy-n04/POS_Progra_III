@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.chart.ChartFactory;
@@ -21,6 +23,8 @@ import pos.Application;
 import pos.data.Data;
 import pos.data.XmlPersister;
 import pos.logic.Categoria;
+import pos.logic.Factura;
+import pos.logic.Producto;
 
 public class View implements PropertyChangeListener {
     private JPanel Datos;
@@ -191,6 +195,8 @@ public class View implements PropertyChangeListener {
         this.controller = controller;
     }
 
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
@@ -232,19 +238,33 @@ public class View implements PropertyChangeListener {
                     System.out.println("No se encontro el rango");
                 break;
             case Model.DATA:
-                //TODO: Datos de Prueba, solo para ver que sirva el List(Jtable)
+                model.getCategoriasALL();
+                Rango nuevoRango= null;
+                Data datta = null;
+                try {
+                    datta = XmlPersister.instance().load();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
                 Object[][] datos = {};
                 String[] nom = {"Categoria"};
                 list.setModel(new DefaultTableModel(datos,nom));
+                List<Factura> facturaList = datta.getFacturas();
+                Rango rangoCustom = new Rango((int)InicioAnno.getSelectedItem(),(int)InicioFecha.getSelectedItem(),(int)FinalAnno.getSelectedIndex(),(int)FinalFecha.getSelectedItem() );
+                list.setModel(actualizarTabla(facturaList, rangoCustom));
+
+                //--------------------------------Grafico------------------------------------------
+
 //Esto crea el chart para mostrarlo en el grafico
                 JFreeChart chart = ChartFactory.createLineChart(
                         "Ventas por mes", "Ventas", "Mes",
-                        createDataset(),
+                        createDataset(facturaList),
                         PlotOrientation.VERTICAL,
                         true, true, false);
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-                renderer.setBaseShapesVisible(true);
+                renderer.setDefaultShapesVisible(true);
                 ChartPanel chartPanel = new ChartPanel(chart);
                 if(Grafico != null){
                     Grafico.removeAll();
@@ -256,19 +276,109 @@ public class View implements PropertyChangeListener {
         this.panel.revalidate();
     }
 
-    private DefaultCategoryDataset createDataset( ) {
+    private DefaultCategoryDataset createDataset( List<Factura> Lista) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-                //todo  AGREGAR LAS CATEGORIAS CON SUS VENTAS
-        dataset.addValue( 150 , "Lacteo" , "12 2007");
-        dataset.addValue( 300 , "Fruta" , "15 2013");
-        dataset.addValue( 500 , "Fruta" , "7 2014");
-        dataset.addValue( 470 , "Fruta" , "5 2006");
-        dataset.addValue( 190 , "Snack" , "6 2006");
-        dataset.addValue( 210 , "Snack" , "12 2018");
-        dataset.addValue( 470 , "Lacteo" , "1 2020");
-        dataset.addValue( 270 , "Lacteo" , "11 2023");
+
+        for(Factura factura : Lista){
+            String fecha = factura.getFecha().getMonth() + " " + factura.getFecha().getYear();
+            for(Producto producto : factura.getProductos()){
+                String categoria = producto.getCategoria();
+                float totalVentasProducto = producto.getPrecioUnitario() * producto.getExistencias();
+                dataset.addValue(totalVentasProducto,categoria,fecha);
+            }
+        }
+
+       //Datos de prueba
+//        dataset.addValue( 150 , "Lacteo" , "12 2007");
+//        dataset.addValue( 300 , "Fruta" , "15 2013");
+//        dataset.addValue( 500 , "Fruta" , "7 2014");
+//        dataset.addValue( 470 , "Fruta" , "5 2006");
+//        dataset.addValue( 190 , "Snack" , "6 2006");
+//        dataset.addValue( 210 , "Snack" , "12 2018");
+//        dataset.addValue( 470 , "Lacteo" , "1 2020");
+//        dataset.addValue( 270 , "Lacteo" , "11 2023");
 
         return dataset;
+    }
+
+
+    private DefaultTableModel actualizarTabla(List<Factura> facturaList, Rango rango) {
+        DefaultTableModel currentModel = (DefaultTableModel) list.getModel();
+        List<String> categorias = new ArrayList<>();
+
+        for (int i = 0; i < currentModel.getRowCount(); i++) {
+            categorias.add((String) currentModel.getValueAt(i, 0));
+        }
+
+
+        List<String> fechas = new ArrayList<>();
+
+
+        for (Factura factura : facturaList) {
+            int mes = factura.getFecha().getMonth();
+            int anio = factura.getFecha().getYear();
+
+            if (rango.contieneFecha(anio, mes)) {
+                String fecha = String.format("%02d/%d", mes, anio);
+                if (!fechas.contains(fecha)) {
+                    fechas.add(fecha);
+                }
+
+                for (Producto producto : factura.getProductos()) {
+                    String categoria = producto.getCategoria();
+
+
+                    if (!categorias.contains(categoria)) {
+                        categorias.add(categoria);
+                    }
+                }
+            }
+        }
+
+
+        String[] columnas = new String[fechas.size() + 1];
+        columnas[0] = "Categoría";
+        for (int i = 0; i < fechas.size(); i++) {
+            columnas[i + 1] = fechas.get(i);
+        }
+
+
+        int[][] ventas = new int[categorias.size()][fechas.size()];
+
+
+        for (Factura factura : facturaList) {
+            int mes = factura.getFecha().getMonth();
+            int anio = factura.getFecha().getYear();
+
+            if (rango.contieneFecha(anio, mes)) {
+                String fecha = String.format("%02d/%d", mes, anio);
+                int fechaIndex = fechas.indexOf(fecha);
+                for (Producto producto : factura.getProductos()) {
+                    String categoria = producto.getCategoria();
+                    int categoriaIndex = categorias.indexOf(categoria);
+
+
+                    int ventasProducto = (int)producto.getPrecioUnitario() * producto.getExistencias();
+
+
+                    ventas[categoriaIndex][fechaIndex] += ventasProducto;
+                }
+            }
+        }
+
+        DefaultTableModel tableModel = new DefaultTableModel(columnas, 0);
+
+        for (int i = 0; i < categorias.size(); i++) {
+            Object[] fila = new Object[fechas.size() + 1];
+            fila[0] = categorias.get(i);
+            for (int j = 0; j < fechas.size(); j++) {
+                fila[j + 1] = ventas[i][j];
+            }
+
+            tableModel.addRow(fila);
+        }
+
+        return tableModel;
     }
 
 }

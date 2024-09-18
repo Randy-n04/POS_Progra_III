@@ -56,10 +56,7 @@ public class Controller {
         try {
             switch (model.getMode()) {
                 case Application.MODE_CREATE:
-                    Service.instance().create(e.getCliente());
-                    break;
-                case Application.MODE_EDIT:
-                    Service.instance().update(e);
+                    Service.instance().create(e);
                     break;
             }
             model.setFilter(new Linea());
@@ -90,10 +87,9 @@ public class Controller {
     }
 
     public void openCobrarDialog(float total) {
-        Cobrar dialog = new Cobrar(total);  // Pasar el total al constructor de Cobrar
+        Cobrar dialog = new Cobrar(total);
         dialog.pack();
         dialog.setVisible(true);
-        // Aquí puedes manejar el pago realizado si es necesario
     }
 
     public void openCantidadDialog() {
@@ -101,7 +97,6 @@ public class Controller {
         dialog.pack();
         dialog.setVisible(true);
         int cantidad = dialog.getCantidadIngresada();
-        // Aquí puedes manejar la cantidad ingresada si es necesario
     }
 
     public void openDescuentoDialog(){
@@ -109,7 +104,6 @@ public class Controller {
         dialog.pack();
         dialog.setVisible(true);
         float descuento = dialog.getDiscountValue();
-        // Aqui puedes manejar el descuento ingresado si es necesario
     }
 
     public void openBuscarDialog() {

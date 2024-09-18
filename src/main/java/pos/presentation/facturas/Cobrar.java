@@ -32,23 +32,19 @@ public class Cobrar extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        // Configura el formato decimal
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
         decimalFormat = new DecimalFormat("#,##0.00", symbols);
 
-        // Configura el valor del campo Importe
         importe.setText(decimalFormat.format(importeTotal));
 
         buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // Obtén el valor del importe
                     Number importeNumber = decimalFormat.parse(importe.getText().trim());
                     float importeFin = importeNumber.floatValue();
 
-                    // Suma los valores de los JTextField
                     float efectivoFin = parseFloatSafe(efectivo.getText().trim());
                     float tarjetaFin = parseFloatSafe(tarjeta.getText().trim());
                     float chequeFin = parseFloatSafe(cheque.getText().trim());
@@ -56,11 +52,10 @@ public class Cobrar extends JDialog {
 
                     float suma = efectivoFin + tarjetaFin + chequeFin + sinpeFin;
 
-                    // Verifica si la suma es igual al importe
-                    if (Math.abs(suma - importeFin) < 0.01) { // Usar una tolerancia para evitar errores de precisión
+                    if (Math.abs(suma - importeFin) < 0.01) {
                         JOptionPane.showMessageDialog(contentPane, "Pago hecho...");
                         pagoRealizado = true;
-                        dispose(); // Cierra el diálogo actual
+                        dispose();
                     } else {
                         JOptionPane.showMessageDialog(contentPane, "El pago no coincide...");
                     }
@@ -74,19 +69,18 @@ public class Cobrar extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pagoRealizado = false;
-                dispose(); // Cierra el diálogo
+                dispose();
             }
         });
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                pagoRealizado = false; // Establece el estado a falso si se cierra con la X
-                dispose(); // Cierra el diálogo
+                pagoRealizado = false;
+                dispose();
             }
         });
 
-                // Agregar botones y otros componentes al diálogo
     }
 
     public boolean isPagoRealizado() {
@@ -102,7 +96,7 @@ public class Cobrar extends JDialog {
         try {
             return Float.parseFloat(text);
         } catch (NumberFormatException e) {
-            return 0; // Retorna 0 si hay un error en el formato
+            return 0;
         }
     }
 

@@ -51,7 +51,7 @@ public class Model extends AbstractModel {
         public AbstractTableModel getTableModel(){
             return new AbstractTableModel() {
                 @Override
-                public int getRowCount() {return rows.length;} //Queda ver si esto sirve
+                public int getRowCount() {return rows.length;}
 
                 @Override
                 public int getColumnCount() {return cols.length+1;}
@@ -93,41 +93,42 @@ public class Model extends AbstractModel {
         public void setData(float[][] data){this.data= data;}
 
         Rango crearRango(){
-//                Rango nuevoRango= null;  //Todo Datos de prueba abajo, ya que aun no hay facturas con fecha
-//                Data data = null;
-//                try {
-//                    data = XmlPersister.instance().load();
-//                } catch (Exception e) {
-//                    throw new RuntimeException(e);
-//                }
-//                List<Factura> facturaList = data.getFacturas();
-//
-//                int anioInicio = -1;
-//                int mesInicio = -1;
-//                int anioFin = -1;
-//                int mesFin = -1;
-//
-//                for (Factura factura : facturaList) {
-//                    Date fecha = factura.getFecha();
-//                    Calendar cal = Calendar.getInstance();
-//                    cal.setTime(fecha);
-//
-//                    int anio = cal.get(Calendar.YEAR);
-//                    int mes = cal.get(Calendar.MONTH) + 1;
-//
-//                    if (anioInicio == -1 || anio < anioInicio || (anio == anioInicio && mes < mesInicio)) {
-//                        anioInicio = anio;
-//                        mesInicio = mes;
-//                    }
-//
-//                    if (anioFin == -1 || anio > anioFin || (anio == anioFin && mes > mesFin)) {
-//                        anioFin = anio;
-//                        mesFin = mes;
-//                    }
-//                }
-//                nuevoRango = new Rango(anioInicio, mesInicio, anioFin, mesFin);
-//                return nuevoRango;
-            return new Rango(2004,5,2024,7);
+                Rango nuevoRango= null;
+                Data data = null;
+                try {
+                    data = XmlPersister.instance().load();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                List<Factura> facturaList = data.getFacturas();
+                if(facturaList.size()>0) {
+                    int anioInicio = -1;
+                    int mesInicio = -1;
+                    int anioFin = -1;
+                    int mesFin = -1;
+
+                    for (Factura factura : facturaList) {
+                        Date fecha = factura.getFecha();
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(fecha);
+
+                        int anio = cal.get(Calendar.YEAR);
+                        int mes = cal.get(Calendar.MONTH) + 1;
+
+                        if (anioInicio == -1 || anio < anioInicio || (anio == anioInicio && mes < mesInicio)) {
+                            anioInicio = anio;
+                            mesInicio = mes;
+                        }
+
+                        if (anioFin == -1 || anio > anioFin || (anio == anioFin && mes > mesFin)) {
+                            anioFin = anio;
+                            mesFin = mes;
+                        }
+                    }
+                    nuevoRango = new Rango(anioInicio, mesInicio, anioFin, mesFin);
+                    return nuevoRango;
+                }else
+                    return new Rango(2024,1,2024,2); //por defecto
         }
 
 

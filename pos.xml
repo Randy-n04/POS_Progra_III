@@ -151,6 +151,42 @@
             <categoria>Granos/Legumbres</categoria>
             <cantidadComprada>0</cantidadComprada>
         </producto>
+        <producto>
+            <codigo>PRO-007</codigo>
+            <descripcion>Coca cola</descripcion>
+            <unidadMedida>Mililitros</unidadMedida>
+            <precioUnitario>700.0</precioUnitario>
+            <existencias>40</existencias>
+            <categoria>BebidasNoAlcoholicas</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
+        <producto>
+            <codigo>PRO-008</codigo>
+            <descripcion>Tomate</descripcion>
+            <unidadMedida>Unidades</unidadMedida>
+            <precioUnitario>50.0</precioUnitario>
+            <existencias>40</existencias>
+            <categoria>Frutas/Verduras</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
+        <producto>
+            <codigo>PRO-009</codigo>
+            <descripcion>Lays</descripcion>
+            <unidadMedida>Gramos</unidadMedida>
+            <precioUnitario>800.0</precioUnitario>
+            <existencias>20</existencias>
+            <categoria>Snacks</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
+        <producto>
+            <codigo>PRO-010</codigo>
+            <descripcion>Posta de cerdo</descripcion>
+            <unidadMedida>Kilogramo</unidadMedida>
+            <precioUnitario>3500.0</precioUnitario>
+            <existencias>15</existencias>
+            <categoria>Carnes</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
     </productos>
     <facturas>
         <factura>
@@ -185,6 +221,30 @@
             </lineas>
             <fecha>2024-09-17</fecha>
         </factura>
+        <factura>
+            <numero>FAC-003</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+                <linea>
+                    <numero>LIN-002</numero>
+                    <producto>PRO-005</producto>
+                    <cantidad>1</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>500.0</neto>
+                    <importe>500.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
     </facturas>
     <lineas>
         <linea>
@@ -194,6 +254,14 @@
             <descuento>0.0</descuento>
             <neto>6000.0</neto>
             <importe>6000.0</importe>
+        </linea>
+        <linea>
+            <numero></numero>
+            <producto>PRO-005</producto>
+            <cantidad>1</cantidad>
+            <descuento>0.0</descuento>
+            <neto>500.0</neto>
+            <importe>500.0</importe>
         </linea>
     </lineas>
 </data>

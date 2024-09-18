@@ -27,7 +27,6 @@ public class Buscar extends JDialog {
                 0
         ));
 
-        // Mostrar todos los productos al iniciar
         actualizarTabla(null);
 
         buttonOK.addActionListener(new ActionListener() {
@@ -42,7 +41,6 @@ public class Buscar extends JDialog {
             }
         });
 
-        // Call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -50,7 +48,6 @@ public class Buscar extends JDialog {
             }
         });
 
-        // Call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -71,10 +68,8 @@ public class Buscar extends JDialog {
         DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
         tableModel.setRowCount(0); // Limpiar la tabla
 
-        // Obtener todos los productos
         List<Producto> productos = Service.instance().getProductos();
 
-        // Filtrar productos según la descripción
         for (Producto producto : productos) {
             if (descripcionFiltro == null || descripcionFiltro.isEmpty() ||
                     producto.getDescripcion().toLowerCase().contains(descripcionFiltro.toLowerCase())) {
@@ -90,7 +85,6 @@ public class Buscar extends JDialog {
         }
     }
 
-    // Método para establecer el controlador
     public void setController(Controller controller) {
         this.controller = controller;
     }
