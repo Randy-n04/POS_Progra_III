@@ -245,6 +245,30 @@
             </lineas>
             <fecha>2024-09-17</fecha>
         </factura>
+        <factura>
+            <numero>FAC-004</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+                <linea>
+                    <numero>LIN-002</numero>
+                    <producto>PRO-005</producto>
+                    <cantidad>1</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>500.0</neto>
+                    <importe>500.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
     </facturas>
     <lineas>
         <linea>

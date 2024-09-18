@@ -14,15 +14,15 @@ public class Rango {
     int annoHasta;
     int mesHasta;
 
-   public Rango(int aDesde,int mDesde,int aHasta,int mHasta){
-       this.annoDesde=aDesde;
-       this.mesDesde=mDesde;
-       this.annoHasta=aHasta;
-       this.mesHasta=mHasta;
-   }
+    public Rango(int aDesde,int mDesde,int aHasta,int mHasta){
+        this.annoDesde=aDesde;
+        this.mesDesde=mDesde;
+        this.annoHasta=aHasta;
+        this.mesHasta=mHasta;
+    }
 
     int getAnnoDesde(){
-       return annoDesde;
+        return annoDesde;
     }
 
     int getMesDesde(){
@@ -76,19 +76,19 @@ public class Rango {
         return fechas;
     }
 
-    boolean withinRango(Factura factura){
-       int mes = factura.getFecha().getMonth();
-       int anio = factura.getFecha().getYear();
+//    boolean withinRango(Factura factura){
+//        int mes = factura.getFecha().getMonth();
+//        int anio = factura.getFecha().getYear();
+//
+//        if(annoDesde <= anio && mesHasta >= anio){
+//            if(anio == annoDesde && mesDesde > mes)
+//                return false;
+//            if(anio == annoHasta && mesHasta < mes)
+//                return false;
+//
+//            return true;
+//        }
+//        return false;
+//    }
 
-       if(annoDesde <= anio && mesHasta >= anio){
-           if(anio == annoDesde && mesDesde > mes)
-               return false;
-           if(anio == annoHasta && mesHasta < mes)
-               return false;
-
-           return true;
-       }
-       return false;
-    }
-    
 }
