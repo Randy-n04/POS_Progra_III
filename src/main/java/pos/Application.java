@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 
 
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         }
@@ -66,6 +66,15 @@ public class Application {
 
         tabbedPane.addTab("Productos  ",productosIcon,productosView.getPanelGen());
 
+
+        //----------------------------------------Historico----------------------------------------------------
+        pos.presentation.historico.Model historicoModel = new pos.presentation.historico.Model();
+        pos.presentation.historico.View historicoView = new pos.presentation.historico.View();
+        historicoController = new pos.presentation.historico.Controller(historicoView, historicoModel);
+        Icon historicoIcon = new ImageIcon(Application.class.getResource("/pos/presentation/icons/historico.png"));
+
+        tabbedPane.addTab("Historico  ", historicoIcon, historicoView.getPanel());
+
         //---------------------------------------Estadistica------------------------------------------------------
         pos.presentation.estadisticas.Model estModel = new pos.presentation.estadisticas.Model();
         pos.presentation.estadisticas.View estView = new pos.presentation.estadisticas.View();
@@ -73,7 +82,6 @@ public class Application {
         Icon estadisticasIcon = new ImageIcon(Application.class.getResource("/pos/presentation/icons/chart.png"));
 
         tabbedPane.addTab("Estadisticas ",estadisticasIcon,estView.getPanel());
-
 
         window.setSize(1000,500);
         window.setResizable(false);
@@ -90,6 +98,9 @@ public class Application {
     public static pos.presentation.productos.ControllerProd productosController;
 
     public static pos.presentation.facturas.Controller facturasController;
+
+    public static pos.presentation.historico.Controller historicoController;
+
 
 
     public static JFrame window;

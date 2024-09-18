@@ -41,6 +41,18 @@
             <id>CAJ-002</id>
             <nombre>Marta</nombre>
         </cajero>
+        <cajero>
+            <id>CAJ-003</id>
+            <nombre>Dario</nombre>
+        </cajero>
+        <cajero>
+            <id>CAJ-004</id>
+            <nombre>Juan</nombre>
+        </cajero>
+        <cajero>
+            <id>CAJ-005</id>
+            <nombre>Pablo</nombre>
+        </cajero>
     </cajeros>
     <categorias>
         <categoria>
@@ -121,6 +133,67 @@
             <categoria>Granos/Legumbres</categoria>
             <cantidadComprada>0</cantidadComprada>
         </producto>
+        <producto>
+            <codigo>PRO-005</codigo>
+            <descripcion>Vainicas</descripcion>
+            <unidadMedida>Gramos(en bolsa)</unidadMedida>
+            <precioUnitario>500.0</precioUnitario>
+            <existencias>20</existencias>
+            <categoria>Frutas/Verduras</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
+        <producto>
+            <codigo>PRO-006</codigo>
+            <descripcion>Frijoles</descripcion>
+            <unidadMedida>Gramos</unidadMedida>
+            <precioUnitario>3000.0</precioUnitario>
+            <existencias>40</existencias>
+            <categoria>Granos/Legumbres</categoria>
+            <cantidadComprada>0</cantidadComprada>
+        </producto>
     </productos>
-    <facturas/>
+    <facturas>
+        <factura>
+            <numero>FAC-001</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
+        <factura>
+            <numero>FAC-002</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
+    </facturas>
+    <lineas>
+        <linea>
+            <numero></numero>
+            <producto>PRO-006</producto>
+            <cantidad>2</cantidad>
+            <descuento>0.0</descuento>
+            <neto>6000.0</neto>
+            <importe>6000.0</importe>
+        </linea>
+    </lineas>
 </data>

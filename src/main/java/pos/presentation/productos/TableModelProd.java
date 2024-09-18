@@ -42,5 +42,10 @@ public class TableModelProd extends AbstractTableModel<Producto> implements java
         colNames[EXISTENCIAS]= "Existencias";
         colNames[CATEGORIA]= "Categoria";
     }
+    public void setProducts(List<Producto> productos) {
+        this.rows = productos;
+        fireTableDataChanged(); // Notifica que los datos han cambiado
+    }
+
 }
 

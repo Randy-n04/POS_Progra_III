@@ -1,16 +1,11 @@
 package pos.presentation.facturas;
-
 import pos.logic.Factura;
-import pos.logic.Producto;
+import pos.logic.Linea;
 import pos.presentation.AbstractTableModel;
 
 import java.util.List;
 
-public class TableModel extends AbstractTableModel<Factura> implements javax.swing.table.TableModel {
-
-    public TableModel(int[] cols, List<Factura> rows) {
-        super(cols, rows);
-    }
+public class TableModel extends AbstractTableModel<Linea> implements javax.swing.table.TableModel {
 
     public static final int CODIGO=0;
     public static final int ARTICULO=1;
@@ -21,17 +16,21 @@ public class TableModel extends AbstractTableModel<Factura> implements javax.swi
     public static final int NETO = 6;
     public static final int IMPORTE = 7;
 
+    public TableModel(int[] cols, List<Linea> rows) {
+        super(cols, rows);
+    }
+
     @Override
-    protected Object getPropetyAt(Factura e, int col) {
+    protected Object getPropetyAt(Linea e, int col) {
         switch (cols[col]){
-            //case CODIGO: return e.getCodigo();
-            //case ARTICULO: return e.getDescripcion();
-            //case CATEGORIA: return e.getCategoria();
-            //case CANTIDAD: return e.getCantidadComp();
-            //case PRECIO: return e.getPrecioUnitario();
-            //case DESCUENTO: return e.getImpuesto();
-            //case NETO: return e.calculoNeto();
-            //case IMPORTE: return e.calculoImporte();
+            case CODIGO: return e.getProducto().getCodigo();
+            case ARTICULO: return e.getProducto().getDescripcion();
+            case CATEGORIA: return e.getProducto().getCategoria();
+            case CANTIDAD: return e.getCantidad();
+            case PRECIO: return e.getProducto().getPrecioUnitario();
+            case DESCUENTO: return e.getDescuento();
+            case NETO: return e.getNeto();
+            case IMPORTE: return e.getImporte();
             default: return "";
         }
     }
