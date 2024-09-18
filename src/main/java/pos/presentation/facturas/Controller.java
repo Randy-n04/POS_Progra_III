@@ -118,6 +118,19 @@ public class Controller {
         Buscar dialog = new Buscar();
         dialog.pack();
         dialog.setVisible(true);
+    // Método para agregar productos desde la búsqueda
+    public void agregarProductoDesdeBusqueda(Producto producto) {
+
+        model.addProducto(producto);  // Agrega el producto al modelo
+        view.actualizarTextoProductos();  // Actualiza el texto del JTextField con los productos
+    }
+
+
+    public void openBuscarDialog() {
+        Buscar buscarDialog = new Buscar(model.getLines(), model); // Pasar ambos parámetros
+        buscarDialog.pack();
+        buscarDialog.setController(this);  // Pasa el controlador al diálogo de búsqueda
+        buscarDialog.setVisible(true);
     }
 
 }

@@ -1,14 +1,20 @@
 package pos;
-//prueba y error
 import pos.logic.Service;
-
+import pos.presentation.facturas.Controller;
+import pos.presentation.facturas.Model;
+import pos.presentation.facturas.View;
+import pos.presentation.productos.ControllerProd;
+import pos.presentation.productos.ModelProd;
+import pos.presentation.productos.ViewProd;
+import pos.presentation.estadisticas.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-// da
+
+
 public class Application {
     public static void main(String[] args) throws Exception {
         try {
@@ -28,9 +34,9 @@ public class Application {
             }
         });
         //-----------------------------------------Facturas------------------------------------------------
-        pos.presentation.facturas.Model facturasModel= new pos.presentation.facturas.Model();
-        pos.presentation.facturas.View facturasView = new pos.presentation.facturas.View();
-        facturasController = new pos.presentation.facturas.Controller(facturasView, facturasModel);
+        Model facturasModel= new Model();
+        View facturasView = new View();
+        facturasController = new Controller(facturasView, facturasModel);
         Icon facturasIcon= new ImageIcon(Application.class.getResource("/pos/presentation/icons/invoice.png"));
 
         tabbedPane.addTab("Facturas  ",facturasIcon,facturasView.getPanel());
@@ -53,12 +59,13 @@ public class Application {
         tabbedPane.addTab("Cajeros  ",cajerosIcon,cajeroView.getPanel());
 
         //----------------------------------------Productos-----------------------------------------------------
-        pos.presentation.productos.ModelProd productosModel= new pos.presentation.productos.ModelProd();
-        pos.presentation.productos.ViewProd productosView = new pos.presentation.productos.ViewProd();
-        productosController = new pos.presentation.productos.ControllerProd(productosView, productosModel);
+        ModelProd productosModel= new ModelProd();
+        ViewProd productosView = new ViewProd();
+        productosController = new ControllerProd(productosView, productosModel);
         Icon productosIcon= new ImageIcon(Application.class.getResource("/pos/presentation/icons/product.png"));
 
         tabbedPane.addTab("Productos  ",productosIcon,productosView.getPanelGen());
+
 
         //----------------------------------------Historico----------------------------------------------------
         pos.presentation.historico.Model historicoModel = new pos.presentation.historico.Model();
@@ -68,7 +75,15 @@ public class Application {
 
         tabbedPane.addTab("Historico  ", historicoIcon, historicoView.getPanel());
 
-        window.setSize(900,450);
+        //---------------------------------------Estadistica------------------------------------------------------
+        pos.presentation.estadisticas.Model estModel = new pos.presentation.estadisticas.Model();
+        pos.presentation.estadisticas.View estView = new pos.presentation.estadisticas.View();
+        pos.presentation.estadisticas.Controller estadisticasController = new pos.presentation.estadisticas.Controller(estView,estModel);
+        Icon estadisticasIcon = new ImageIcon(Application.class.getResource("/pos/presentation/icons/chart.png"));
+
+        tabbedPane.addTab("Estadisticas ",estadisticasIcon,estView.getPanel());
+
+        window.setSize(1000,500);
         window.setResizable(false);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setIconImage((new ImageIcon(Application.class.getResource("presentation/icons/icon.png"))).getImage());
