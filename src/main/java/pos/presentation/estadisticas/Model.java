@@ -101,33 +101,34 @@ public class Model extends AbstractModel {
                     throw new RuntimeException(e);
                 }
                 List<Factura> facturaList = data.getFacturas();
+                if(facturaList.size()>0) {
+                    int anioInicio = -1;
+                    int mesInicio = -1;
+                    int anioFin = -1;
+                    int mesFin = -1;
 
-                int anioInicio = -1;
-                int mesInicio = -1;
-                int anioFin = -1;
-                int mesFin = -1;
+                    for (Factura factura : facturaList) {
+                        Date fecha = factura.getFecha();
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(fecha);
 
-                for (Factura factura : facturaList) {
-                    Date fecha = factura.getFecha();
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(fecha);
+                        int anio = cal.get(Calendar.YEAR);
+                        int mes = cal.get(Calendar.MONTH) + 1;
 
-                    int anio = cal.get(Calendar.YEAR);
-                    int mes = cal.get(Calendar.MONTH) + 1;
+                        if (anioInicio == -1 || anio < anioInicio || (anio == anioInicio && mes < mesInicio)) {
+                            anioInicio = anio;
+                            mesInicio = mes;
+                        }
 
-                    if (anioInicio == -1 || anio < anioInicio || (anio == anioInicio && mes < mesInicio)) {
-                        anioInicio = anio;
-                        mesInicio = mes;
+                        if (anioFin == -1 || anio > anioFin || (anio == anioFin && mes > mesFin)) {
+                            anioFin = anio;
+                            mesFin = mes;
+                        }
                     }
-
-                    if (anioFin == -1 || anio > anioFin || (anio == anioFin && mes > mesFin)) {
-                        anioFin = anio;
-                        mesFin = mes;
-                    }
-                }
-                nuevoRango = new Rango(anioInicio, mesInicio, anioFin, mesFin);
-                return nuevoRango;
-            //return new Rango(2004,5,2024,7); //Datos de prueba
+                    nuevoRango = new Rango(anioInicio, mesInicio, anioFin, mesFin);
+                    return nuevoRango;
+                }else
+                    return new Rango(2024,1,2024,2); //por defecto
         }
 
 
