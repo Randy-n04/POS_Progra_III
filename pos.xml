@@ -152,22 +152,48 @@
             <cantidadComprada>0</cantidadComprada>
         </producto>
     </productos>
+    <facturas>
+        <factura>
+            <numero>FAC-001</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
+        <factura>
+            <numero>FAC-002</numero>
+            <cajero>CAJ-001</cajero>
+            <cliente>CLI-003</cliente>
+            <lineas>
+                <linea>
+                    <numero>LIN-001</numero>
+                    <producto>PRO-006</producto>
+                    <cantidad>2</cantidad>
+                    <descuento>0.0</descuento>
+                    <neto>3000.0</neto>
+                    <importe>6000.0</importe>
+                </linea>
+            </lineas>
+            <fecha>2024-09-17</fecha>
+        </factura>
+    </facturas>
     <lineas>
         <linea>
             <numero></numero>
-            <producto>PRO-001</producto>
-            <cantidad>1</cantidad>
+            <producto>PRO-006</producto>
+            <cantidad>2</cantidad>
             <descuento>0.0</descuento>
-            <neto>650.0</neto>
-            <importe>650.0</importe>
-        </linea>
-        <linea>
-            <numero></numero>
-            <producto>PRO-002</producto>
-            <cantidad>1</cantidad>
-            <descuento>0.0</descuento>
-            <neto>1500.0</neto>
-            <importe>1500.0</importe>
+            <neto>6000.0</neto>
+            <importe>6000.0</importe>
         </linea>
     </lineas>
 </data>

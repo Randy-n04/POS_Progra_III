@@ -356,6 +356,11 @@ public class View implements PropertyChangeListener {
         factura.setCajero((Cajero) cajeroBox.getSelectedItem());
         factura.setFecha(LocalDate.now());
 
+        // Generar un número único para la factura
+        int numeroFac = Service.instance().getFacturas().size() + 1;
+        factura.setNumero(String.format("%03d", numeroFac));
+
+        int numeroLin = 1;
         TableModel tableModel = (TableModel) productosTbl.getModel();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Linea linea = new Linea();
@@ -371,11 +376,14 @@ public class View implements PropertyChangeListener {
                 linea.setNeto(precio);
                 linea.setDescuento(descuento);
                 linea.setImporte(precio * cantidad - descuento);
+                linea.setNumero(String.format("%03d", numeroLin));
+                numeroLin++;
                 factura.getLineas().add(linea);
             }
         }
         return factura;
     }
+
 
 
     private Producto getProductoPorCodigo(String codigo) {
