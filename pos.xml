@@ -156,14 +156,6 @@
     <lineas>
         <linea>
             <numero></numero>
-            <producto>PRO-002</producto>
-            <cantidad>1</cantidad>
-            <descuento>0.5</descuento>
-            <neto>1500.0</neto>
-            <importe>1492.5</importe>
-        </linea>
-        <linea>
-            <numero></numero>
             <producto>PRO-001</producto>
             <cantidad>1</cantidad>
             <descuento>10.0</descuento>
