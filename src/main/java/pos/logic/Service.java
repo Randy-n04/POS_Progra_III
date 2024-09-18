@@ -3,8 +3,6 @@ package pos.logic;
 import pos.data.Data;
 import pos.data.XmlPersister;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,8 +77,11 @@ public class Service {
         }
     }
 
+    public List<Cliente> getClientes() {
+        return data.getClientes();
+    }
 
-//================= CAJEROS ============
+    //================= CAJEROS ============
     public void create(Cajero e) throws Exception{
         Cajero result = data.getCajeros().stream().filter(i->i.getId().equals(e.getId())).findFirst().orElse(null);
         if (result==null) data.getCajeros().add(e);
@@ -124,7 +125,11 @@ public class Service {
         }
     }
 
-//================= CATEGORIAS ============
+    public List<Cajero> getCajeros() {
+        return data.getCajeros();
+    }
+
+    //================= CATEGORIAS ============
     public void create(Categoria e) throws Exception{
         Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result==null) data.getCategorias().add(e);
@@ -144,7 +149,12 @@ public class Service {
         }
     }
 
-//================= PRODUCTOS ============
+    public List<Categoria> getCategorias() {
+        return data.getCategorias();  // Retorna la lista completa de productos
+    }
+
+
+    //================= PRODUCTOS ============
     public void create(Producto e) throws Exception{
         Producto result = data.getProductos().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result==null) data.getProductos().add(e);
@@ -188,16 +198,17 @@ public class Service {
         }
     }
 
+    public List<Producto> getProductos(){
+        return data.getProductos();
+    }
+
     //================= FACTURAS ============
 
-    /*public void create(Factura e) throws Exception{
-        e.setNumero(data.nextFactura());
-        data.getFacturas().add(e);
-        for(Lines l;e.getLines()){
-            l.setFactura(e);
-            this.create(l);
-        }
-    }*/
+    public void create(Factura e) throws Exception {
+        Factura result = data.getFacturas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
+        if (result == null) data.getFacturas().add(e);
+        else throw new Exception("Factura ya existe");
+    }
 
     public Factura read(Factura e) throws Exception{
         Factura result = data.getFacturas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
@@ -230,14 +241,60 @@ public class Service {
         else {
             return data.getFacturas().stream()
                     .filter(i -> i.getCliente().getNombre().contains(e.getCliente().getNombre()))
-                    .sorted(Comparator.comparing(f -> f.getFecha().toString()))
+                    .sorted(Comparator.comparing(f -> f.getCliente().getNombre()))
                     .collect(Collectors.toList());
         }
     }
 
-    //================= GUARDAR Y CARGAR LINES ===================
+    public List<Factura> getFacturas(){
+        return data.getFacturas();
+    }
 
+    //================= LINEAS ===================
+    public void create(Linea e) throws Exception{
+        Linea result = data.getLineas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
+        if(result==null) data.getLineas().add(e);
+        else throw new Exception("Linea ya existe");
+    }
 
+    public Linea read(Linea e) throws Exception{
+        Linea result = data.getLineas().stream().filter(i -> i.getNumero().equals(e.getNumero())).findFirst().orElse(null);
+        if (result != null) return result;
+        else throw new Exception("Linea no existe");
+    }
 
+    public void update(Linea e) throws Exception{
+        Linea result;
+        try {
+            result = this.read(e);
+            data.getLineas().remove(result);
+            data.getLineas().add(e);
+        } catch (Exception ex) {
+            throw new Exception("Linea no existe");
+        }
+    }
+
+    public void delete(Linea e) throws Exception{
+        data.getFacturas().remove(e);
+    }
+
+    public List<Linea> search(Linea e){
+        if (e.getNumero() != null && !e.getNumero().isEmpty()) {
+            return data.getLineas().stream()
+                    .filter(i -> i.getNumero().contains(e.getNumero()))
+                    .sorted(Comparator.comparing(Linea::getNumero))
+                    .collect(Collectors.toList());
+        }
+        else {
+            return data.getLineas().stream()
+                    .filter(i -> i.getProducto().getDescripcion().contains(e.getProducto().getDescripcion()))
+                    .sorted(Comparator.comparing(f -> f.getProducto().getCodigo()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public List<Linea> getLineas(){
+        return data.getLineas();
+    }
 
 }

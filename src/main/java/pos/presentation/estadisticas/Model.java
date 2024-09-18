@@ -135,5 +135,3 @@ public class Model extends AbstractModel {
         public static final String CATEGORIES_ALL = "categories_all";
         public static final String RANGE = "range";
         public static final String DATA = "data";
-
-}

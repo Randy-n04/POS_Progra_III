@@ -8,7 +8,7 @@ public class Cantidad extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JLabel cantidadLbl;
-    private JTextField textField1;
+    private JTextField cantidadText;
     private JPanel cantidad;
     private int cantidadIngresada;
 
@@ -47,8 +47,12 @@ public class Cantidad extends JDialog {
 
     private void onOK() {
         try {
-            cantidadIngresada = Integer.parseInt(textField1.getText());
-            dispose();
+            cantidadIngresada = Integer.parseInt(cantidadText.getText());
+            if (cantidadIngresada <= 0) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese un número mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                dispose();
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese un número válido", "Error", JOptionPane.ERROR_MESSAGE);
         }
