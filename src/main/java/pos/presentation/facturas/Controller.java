@@ -90,7 +90,7 @@ public class Controller {
         model.setMode(Application.MODE_CREATE);
         model.setCurrent(new Linea());
     }
-
+//
     public void openCobrarDialog(float total) {
         Cobrar dialog = new Cobrar(total);  // Pasar el total al constructor de Cobrar
         dialog.pack();
