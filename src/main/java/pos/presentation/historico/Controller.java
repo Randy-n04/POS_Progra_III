@@ -1,101 +1,44 @@
 package pos.presentation.historico;
 
 import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
-import pos.Application;
-import pos.data.XmlPersister;
-import pos.logic.*;
+import pos.logic.Factura;
+import pos.logic.Linea;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class Controller {
-    View view;
-    Model model;
-    public Controller(View view, Model model) {
-        try{
-            List<Factura> facturas = XmlPersister.instance().load().getFacturas();
-            List<Linea> lineas = XmlPersister.instance().load().getLineas();
-            if(facturas != null && lineas != null){
-                model.init(facturas, lineas);
-                if(!facturas.isEmpty()) {
-                    model.setCurrentFac(facturas.get(0));
-                } if(!lineas.isEmpty()) {
-                    model.setCurrentLin(lineas.get(0));
-                }
-            } else{
-                System.out.println("No se puede cargar los facturas o las lineas");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        this.view = view;
+    private Model model;
+
+    public Controller(View historicoView, Model model) {
         this.model = model;
-       // view.setController(this);
-        //view.setModel(model);
     }
 
-    public void search(Factura filter) throws Exception{
-        model.setFilterFac(filter);
-        model.setMode(Application.MODE_CREATE);
-        model.setFilterFac(new Factura());
-        model.setListFac(Service.instance().search(model.getFilterFac()));
+    // Método para buscar por fecha
+    public List<Factura> searchByFecha(LocalDate fecha) {
+        // Implementa la lógica para buscar facturas por fecha
+        return model.getFacturasByFecha(fecha);
     }
 
-    public void search(Linea filter) throws Exception{
-        model.setFilterLin(filter);
-        model.setMode(Application.MODE_CREATE);
-        //model.setFilterLin(new Factura());
-        //model.setListLin(Service.instance().search(model.getFilterFac()));
-    }
-
-    public void init(){
-        try{
-            List<Factura> facturas = XmlPersister.instance().load().getFacturas();
-            List<Linea> lineas = XmlPersister.instance().load().getLineas();
-            model.init(facturas, lineas);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void editFac(Factura row){
-        //Factura e = model.getListFac(Service.instance().read(row));
-        try{
-            model.setMode(Application.MODE_EDIT);
-            //model.setCurrentFac(Service.instance().read(e));
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    public void editLin(Linea row){
-        //Linea e = model.getListLin(Service.instance().read(row));
-        try{
-            model.setMode(Application.MODE_EDIT);
-        //    model.setCurrentLin(Service.instance().read(e));
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+    public Factura searchByNumFactura(String numero) {
+        // Implementa la lógica para buscar una factura por su número
+        return model.getFacturaByNumero(numero);
     }
 
     public void report() throws Exception {
-        if (model.getListFac().isEmpty()) {
-            throw new Exception("No hay facturas disponibles para generar el reporte.");
-        }
-
-        if (model.getListLin().isEmpty()) {
-            throw new Exception("No hay lineas disponibles para generar el reporte.");
+        if (model.getListFac().isEmpty() || model.getListLin().isEmpty()) {
+            throw new Exception("No hay datos disponibles para generar el reporte.");
         }
 
         String dest = "historico.pdf";
@@ -103,50 +46,73 @@ public class Controller {
         try (PdfWriter writer = new PdfWriter(dest); PdfDocument pdf = new PdfDocument(writer); Document document = new Document(pdf)) {
             document.setMargins(20, 20, 20, 20);
 
+            // Header
             Table header = new Table(1);
-            header.setWidth(400);
+            header.setWidth(500);
             header.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            header.addCell(getCell(new Paragraph("Listado de Clientes").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER, false, ColorConstants.WHITE));
+            header.addCell(createCell("Reporte Histórico", font, TextAlignment.CENTER, true, ColorConstants.WHITE));
             document.add(header);
 
-            document.add(new Paragraph(""));
-            document.add(new Paragraph(""));
+            document.add(new Paragraph("\n"));
 
-            Color bkg = ColorConstants.BLUE;
-            Color frg = ColorConstants.WHITE;
-            Table body = new Table(7);
-            body.setWidth(400);
-            body.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            body.addCell(getCell(new Paragraph("Factura").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
-            body.addCell(getCell(new Paragraph("Producto").setBackgroundColor(bkg).setFontColor(frg), TextAlignment.CENTER, true, bkg));
+            // Facturas Table
+            Table facturasTable = new Table(4);
+            facturasTable.setWidth(500);
+            facturasTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            facturasTable.addCell(createCell("Número", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            facturasTable.addCell(createCell("Fecha", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            facturasTable.addCell(createCell("Cajero", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            facturasTable.addCell(createCell("Cliente", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
 
-            for (Factura e : model.getListFac()) {
-                body.addCell(getCell(new Paragraph(e.getNumero()), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getCajero())), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getCliente())), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getFecha())), TextAlignment.CENTER, true, frg));
+            for (Factura factura : model.getListFac()) {
+                facturasTable.addCell(createCell(factura.getNumero(), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                facturasTable.addCell(createCell(factura.getFecha().toString(), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                facturasTable.addCell(createCell(factura.getCajero().getId(), font, TextAlignment.CENTER, false, ColorConstants.WHITE)); // Ajusta según toString() de Cajero
+                facturasTable.addCell(createCell(factura.getCliente().getId(), font, TextAlignment.CENTER, false, ColorConstants.WHITE)); // Ajusta según toString() de Cliente
             }
+            document.add(facturasTable);
 
-            for (Linea e : model.getListLin()) {
-                body.addCell(getCell(new Paragraph(e.getProducto().getCodigo()), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(e.getProducto().getDescripcion()), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(e.getProducto().getCategoria().toString()), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(e.getProducto().getUnidadMedida()), TextAlignment.CENTER, true, frg));
-                body.addCell(getCell(new Paragraph(String.valueOf(e.getProducto().getPrecioUnitario())), TextAlignment.CENTER, true, frg));
+            document.add(new Paragraph("\n"));
+
+            // Lineas Table
+            Table lineasTable = new Table(8);
+            lineasTable.setWidth(500);
+            lineasTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            lineasTable.addCell(createCell("Código", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Artículo", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Categoría", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Cantidad", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Precio Unitario", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Descuento", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Neto", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+            lineasTable.addCell(createCell("Importe", font, TextAlignment.CENTER, true, ColorConstants.LIGHT_GRAY));
+
+            for (Linea linea : model.getListLin()) {
+                lineasTable.addCell(createCell(linea.getProducto().getCodigo(), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(linea.getProducto().getDescripcion(), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(linea.getProducto().getCategoria().toString(), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(String.valueOf(linea.getCantidad()), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(String.valueOf(linea.getProducto().getPrecioUnitario()), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(String.valueOf(linea.getDescuento()), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(String.valueOf(linea.getNeto()), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
+                lineasTable.addCell(createCell(String.valueOf(linea.getImporte()), font, TextAlignment.CENTER, false, ColorConstants.WHITE));
             }
-            document.add(body);
+            document.add(lineasTable);
+
         } catch (Exception e) {
             throw new RuntimeException("Error al generar el reporte", e);
         }
     }
 
-
-    private Cell getCell(Paragraph paragraph, TextAlignment alignment, boolean hasBorder, Color bc) {
-        Cell cell = new Cell().add(paragraph);
-        cell.setPadding(0);
+    private Cell createCell(String text, PdfFont font, TextAlignment alignment, boolean isHeader, com.itextpdf.kernel.colors.Color background) {
+        Cell cell = new Cell().add(new Paragraph(text).setFont(font));
         cell.setTextAlignment(alignment);
-        cell.setBackgroundColor(bc);
-        if (!hasBorder) cell.setBorder(Border.NO_BORDER);
+        cell.setBackgroundColor(background);
+        if (isHeader) {
+            cell.setBold();
+        }
         return cell;
     }
 }
+
+
