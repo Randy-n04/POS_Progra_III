@@ -2,10 +2,10 @@ package pos.logic;
 
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import pos.data.LocalDateAdapter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class Factura {
     @XmlElement(name = "linea")
     List<Linea> lineas;
 
-    //@XmlJavaTypeAdapter(value = LocalDateApapter.class)
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     LocalDate fecha;
 
     public Factura() {
@@ -73,6 +73,14 @@ public class Factura {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public void setLineas(List<Linea> lineas) {
+        this.lineas = lineas;
+    }
+
+    public List<Linea> getLineas() {
+        return lineas;
     }
 
     @Override

@@ -81,7 +81,7 @@ public class Service {
         return data.getClientes();
     }
 
-//================= CAJEROS ============
+    //================= CAJEROS ============
     public void create(Cajero e) throws Exception{
         Cajero result = data.getCajeros().stream().filter(i->i.getId().equals(e.getId())).findFirst().orElse(null);
         if (result==null) data.getCajeros().add(e);
@@ -129,7 +129,7 @@ public class Service {
         return data.getCajeros();
     }
 
-//================= CATEGORIAS ============
+    //================= CATEGORIAS ============
     public void create(Categoria e) throws Exception{
         Categoria result = data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result==null) data.getCategorias().add(e);
@@ -141,13 +141,20 @@ public class Service {
         if (result!=null) return result;
         else throw new Exception("Categoria no existe");
     }
+    public List<Categoria> search(Categoria e){
+        if (e.getCodigo() != null && !e.getCodigo().isEmpty()) {
+            return data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).collect(Collectors.toList());
+        }else{
+            return new ArrayList<>();
+        }
+    }
 
     public List<Categoria> getCategorias() {
         return data.getCategorias();  // Retorna la lista completa de productos
     }
 
 
-//================= PRODUCTOS ============
+    //================= PRODUCTOS ============
     public void create(Producto e) throws Exception{
         Producto result = data.getProductos().stream().filter(i->i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
         if (result==null) data.getProductos().add(e);

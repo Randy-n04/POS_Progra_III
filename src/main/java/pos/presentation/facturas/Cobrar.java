@@ -23,6 +23,7 @@ public class Cobrar extends JDialog {
     private JLabel TarjetaLbl;
     private JLabel efectivoLbl;
     private JLabel importe;
+    private boolean pagoRealizado = true;
 
     private final DecimalFormat decimalFormat;
 
@@ -58,6 +59,7 @@ public class Cobrar extends JDialog {
                     // Verifica si la suma es igual al importe
                     if (Math.abs(suma - importeFin) < 0.01) { // Usar una tolerancia para evitar errores de precisión
                         JOptionPane.showMessageDialog(contentPane, "Pago hecho...");
+                        pagoRealizado = true;
                         dispose(); // Cierra el diálogo actual
                     } else {
                         JOptionPane.showMessageDialog(contentPane, "El pago no coincide...");
@@ -69,10 +71,31 @@ public class Cobrar extends JDialog {
         });
 
         buttonCancel.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Cierra el diálogo actual
+                pagoRealizado = false;
+                dispose(); // Cierra el diálogo
             }
         });
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                pagoRealizado = false; // Establece el estado a falso si se cierra con la X
+                dispose(); // Cierra el diálogo
+            }
+        });
+
+                // Agregar botones y otros componentes al diálogo
+    }
+
+    public boolean isPagoRealizado() {
+        return pagoRealizado;
+    }
+
+    private void confirmarPago(){
+        pagoRealizado = true;
+        this.dispose();
     }
 
     private float parseFloatSafe(String text) {
