@@ -16,83 +16,119 @@ import java.util.List;
 
 public class Model extends AbstractModel {
 
-        private List<Categoria> categoriasALL;
-        private List<Categoria> categorias;
-        private Rango rango;
-        private String[] rows;
-        private String[] cols;
-        private float[][] data;
-        private int mode;
+    private List<Categoria> categoriasALL;
+    private List<Categoria> categorias;
+    private Rango rango;
+    private String[] rows;
+    private String[] cols;
+    private float[][] data;
+    private int mode;
 
-        public Model() {}
+    public Model() {
+    }
 
 
-        @Override
-        public void addPropertyChangeListener(PropertyChangeListener listener) {
-            super.addPropertyChangeListener(listener);
-            firePropertyChange(CATEGORIES_ALL);
-            firePropertyChange(RANGE);
-            firePropertyChange(DATA);
-        }
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        super.addPropertyChangeListener(listener);
+        firePropertyChange(CATEGORIES_ALL);
+        firePropertyChange(RANGE);
+        firePropertyChange(DATA);
+    }
 
-        public void init(List<Categoria> list){
-            this.categoriasALL= list;
-            this.categorias= new ArrayList<Categoria>();
-            rango = this.crearRango();
-            rows = new String[categoriasALL.size()];
-            if(rango != null)
-                cols = rango.getFechas();
-            else
-                cols = new String[3];
-            data = new float[categoriasALL.size()][cols.length];
-            this.mode= Application.MODE_CREATE;
-        }
+    public void init(List<Categoria> list) {
+        this.categoriasALL = list;
+        this.categorias = new ArrayList<Categoria>();
+        rango = this.crearRango();
+        rows = new String[categoriasALL.size()];
+        if (rango != null)
+            cols = rango.getFechas();
+        else
+            cols = new String[3];
+        data = new float[categoriasALL.size()][cols.length];
+        this.mode = Application.MODE_CREATE;
+    }
 
-        public AbstractTableModel getTableModel(){
-            return new AbstractTableModel() {
-                @Override
-                public int getRowCount() {return rows.length;} //Queda ver si esto sirve
+    public AbstractTableModel getTableModel() {
+        return new AbstractTableModel() {
+            @Override
+            public int getRowCount() {
+                return rows.length;
+            } //Queda ver si esto sirve
 
-                @Override
-                public int getColumnCount() {return cols.length+1;}
+            @Override
+            public int getColumnCount() {
+                return cols.length + 1;
+            }
 
-                @Override
-                public Object getValueAt(int rowIndex, int columnIndex) {
-                    if(columnIndex==0){
-                        return rows[rowIndex];
-                    }else{
-                        return cols[columnIndex-1];
-                    }
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                if (columnIndex == 0) {
+                    return rows[rowIndex];
+                } else {
+                    return cols[columnIndex - 1];
                 }
-                public String getColumnName(int column){
-                    if(column==0) {
-                        return "Categoria";
-                    }else{
-                        return "Otro";
-                    }
+            }
+
+            public String getColumnName(int column) {
+                if (column == 0) {
+                    return "Categoria";
+                } else {
+                    return "Otro";
                 }
-            };
-        }
+            }
+        };
+    }
 
-        public List<Categoria> getCategoriasALL() { return categoriasALL;}
-        public void setCAtALL(List<Categoria> list){this.categoriasALL= list;}
+    public List<Categoria> getCategoriasALL() {
+        return categoriasALL;
+    }
 
-        public List<Categoria> getcategorias(){return categorias;}
-        public void setcategorias(List<Categoria> list){this.categorias= list;}
+    public void setCAtALL(List<Categoria> list) {
+        this.categoriasALL = list;
+    }
 
-        public Rango getRango(){return rango;}
-        public void setRango(Rango rango){this.rango= rango;}
+    public List<Categoria> getcategorias() {
+        return categorias;
+    }
 
-        public String[] getRows(){return rows;}
-        public void setRows(String[] rows){this.rows= rows;}
+    public void setcategorias(List<Categoria> list) {
+        this.categorias = list;
+    }
 
-        public String[] getCols(){return cols;}
-        public void setCols(String[] cols){this.cols= cols;}
+    public Rango getRango() {
+        return rango;
+    }
 
-        public float[][] getData(){return data;}
-        public void setData(float[][] data){this.data= data;}
+    public void setRango(Rango rango) {
+        this.rango = rango;
+    }
 
-        Rango crearRango(){
+    public String[] getRows() {
+        return rows;
+    }
+
+    public void setRows(String[] rows) {
+        this.rows = rows;
+    }
+
+    public String[] getCols() {
+        return cols;
+    }
+
+    public void setCols(String[] cols) {
+        this.cols = cols;
+    }
+
+    public float[][] getData() {
+        return data;
+    }
+
+    public void setData(float[][] data) {
+        this.data = data;
+    }
+
+    Rango crearRango() {
 //                Rango nuevoRango= null;  //Todo Datos de prueba abajo, ya que aun no hay facturas con fecha
 //                Data data = null;
 //                try {
@@ -127,10 +163,11 @@ public class Model extends AbstractModel {
 //                }
 //                nuevoRango = new Rango(anioInicio, mesInicio, anioFin, mesFin);
 //                return nuevoRango;
-            return new Rango(2004,5,2024,7);
-        }
+        return new Rango(2004, 5, 2024, 7);
+    }
 
 
-        public static final String CATEGORIES_ALL = "categories_all";
-        public static final String RANGE = "range";
-        public static final String DATA = "data";
+    public static final String CATEGORIES_ALL = "categories_all";
+    public static final String RANGE = "range";
+    public static final String DATA = "data";
+}

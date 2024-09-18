@@ -1,3 +1,12 @@
+//***************************************
+//**    PROYECTO 1 - PROGRAMACIÓN 3    **
+//**              POS                  **
+//**          INTEGRANTES:             **
+//** ANDRÉS ALFARO RAMIREZ - 119190404 **
+//** JOSE CARBALLO MORALES - 119060186 **
+//**   RANDY NUÑEZ VARGAS - 119100297  **
+//***************************************
+
 package pos;
 import pos.logic.Service;
 import pos.presentation.facturas.Controller;
@@ -14,6 +23,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+
+//
 
 public class Application {
     public static void main(String[] args) throws Exception {

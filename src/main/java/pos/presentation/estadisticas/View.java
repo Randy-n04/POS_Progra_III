@@ -244,7 +244,7 @@ public class View implements PropertyChangeListener {
                         true, true, false);
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-                renderer.setBaseShapesVisible(true);
+                renderer.setDefaultShapesVisible(true);
                 ChartPanel chartPanel = new ChartPanel(chart);
                 if(Grafico != null){
                     Grafico.removeAll();

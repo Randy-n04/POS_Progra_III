@@ -134,10 +134,8 @@ public class View implements PropertyChangeListener {
                 dialog.pack();
                 dialog.setVisible(true);
 
-                // Obtener la cantidad ingresada
                 int nuevaCantidad = dialog.getCantidadIngresada();
 
-                // Asegúrate de que la cantidad sea válida
                 if (nuevaCantidad > 0) {
                     Linea linea = model.getList().get(fila);
                     linea.setCantidad(nuevaCantidad);
@@ -159,13 +157,10 @@ public class View implements PropertyChangeListener {
                     return;
                 }
 
-                // Confirmación para eliminar el producto
                 int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    // Eliminar la línea del producto del modelo
                     model.getList().remove(fila);
 
-                    // Actualizar la lista del modelo y la tabla
                     model.setList(model.getList());
                     productosTbl.revalidate();
                     productosTbl.repaint();
@@ -187,10 +182,8 @@ public class View implements PropertyChangeListener {
                 dialog.pack();
                 dialog.setVisible(true);
 
-                // Obtener la cantidad ingresada
                 float nuevoDescuento = dialog.getDiscountValue();
 
-                // Asegúrate de que la cantidad sea válida
                 if (nuevoDescuento > 0 && nuevoDescuento <= 100) {
                     Linea linea = model.getList().get(fila);
                     linea.setDescuento(nuevoDescuento);
@@ -220,7 +213,7 @@ public class View implements PropertyChangeListener {
 
 
         productosTbl.getSelectionModel().addListSelectionListener(e -> {
-            boolean isSelected = productosTbl.getSelectedRow() != -1; // Verifica si hay una fila seleccionada
+            boolean isSelected = productosTbl.getSelectedRow() != -1;
             cantidadBtn.setEnabled(isSelected);
             descuentoBtn.setEnabled(isSelected);
         });
@@ -301,19 +294,17 @@ public class View implements PropertyChangeListener {
 
 
     private void actualizar() {
-        model.setList(new ArrayList<>()); // Asegúrate de que la lista nunca sea null
+        model.setList(new ArrayList<>());
         productosTbl.setModel(new TableModel(new int[]{
                 TableModel.CODIGO, TableModel.ARTICULO, TableModel.CATEGORIA,
                 TableModel.CANTIDAD, TableModel.PRECIO, TableModel.DESCUENTO,
                 TableModel.NETO, TableModel.IMPORTE
-        }, model.getList())); // Reiniciar la tabla
+        }, model.getList()));
         productosTbl.revalidate();
         productosTbl.repaint();
 
-        // Limpiar el campo de texto del producto
         textProducto.setText("");
 
-        // Restablecer los JComboBox de clientes y cajeros
         try {
             Data data = XmlPersister.instance().load();
             List<Cliente> clientesData = data.getClientes();
@@ -325,7 +316,6 @@ public class View implements PropertyChangeListener {
             JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Actualizar el estado de los botones y campos
         textProducto.setEditable(true);
         quitarBtn.setEnabled(false);
     }
@@ -343,7 +333,6 @@ public class View implements PropertyChangeListener {
             totalImporte += linea.getImporte();
         }
 
-        // Asegúrate de que el formato sea correcto
         articulosResultado.setText(String.valueOf(totalArticulos));
         subtotalResultado.setText(String.format("%.2f", totalNeto));
         descuentosResultado.setText(String.format("%.2f", totalDescuentos));
@@ -356,7 +345,6 @@ public class View implements PropertyChangeListener {
         factura.setCajero((Cajero) cajeroBox.getSelectedItem());
         factura.setFecha(LocalDate.now());
 
-        // Generar un número único para la factura
         int numeroFac = Service.instance().getFacturas().size() + 1;
         factura.setNumero(String.format("%03d", numeroFac));
 
@@ -389,10 +377,10 @@ public class View implements PropertyChangeListener {
     private Producto getProductoPorCodigo(String codigo) {
         for (Producto producto : Service.instance().getProductos()) {
             if (producto.getCodigo().equals(codigo)) {
-                return producto;  // Devuelve el producto si coincide el código
+                return producto;
             }
         }
-        return null;  // Devuelve null si no se encuentra el producto
+        return null;
     }
 
 

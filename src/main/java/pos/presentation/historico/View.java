@@ -55,6 +55,8 @@ public class View {
             }
         });
 
+
+
         SearchFactBtn.addActionListener(e -> {
             try {
                 String numFactura = NumFact.getText();
