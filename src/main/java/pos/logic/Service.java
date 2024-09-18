@@ -141,6 +141,13 @@ public class Service {
         if (result!=null) return result;
         else throw new Exception("Categoria no existe");
     }
+    public List<Categoria> search(Categoria e){
+        if (e.getCodigo() != null && !e.getCodigo().isEmpty()) {
+            return data.getCategorias().stream().filter(i->i.getCodigo().equals(e.getCodigo())).collect(Collectors.toList());
+        }else{
+            return new ArrayList<>();
+        }
+    }
 
     public List<Categoria> getCategorias() {
         return data.getCategorias();  // Retorna la lista completa de productos
