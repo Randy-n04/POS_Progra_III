@@ -1,5 +1,7 @@
 package pos.presentation.estadisticas;
 
+import pos.logic.Factura;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -72,6 +74,21 @@ public class Rango {
         }
 
         return fechas;
+    }
+
+    boolean withinRango(Factura factura){
+       int mes = factura.getFecha().getMonth();
+       int anio = factura.getFecha().getYear();
+
+       if(annoDesde <= anio && mesHasta >= anio){
+           if(anio == annoDesde && mesDesde > mes)
+               return false;
+           if(anio == annoHasta && mesHasta < mes)
+               return false;
+
+           return true;
+       }
+       return false;
     }
 
 

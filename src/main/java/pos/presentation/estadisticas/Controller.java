@@ -46,23 +46,30 @@ public class Controller {
         }
 
     }
-    //TODO llenar metodos vacios
-    public void add(Categoria c){
 
+    public void add(Categoria c){
+        if(model.getcategorias().contains(c)){
+            return;
+        }
+        model.getcategorias().add(c);
+        view.getPanel().revalidate();
     }
 
     public void addAll(List<Categoria> c){
-
+        for(Categoria cat : c){
+            add(cat);
+        }
     }
 
     public void remove(Categoria c){
-
+        model.getcategorias().remove(c);
+        view.getPanel().revalidate();
     }
+
     public void removeAll(List<Categoria> c){
-
+        for(Categoria cat : c){
+            remove(cat);
+        }
     }
-
-
-
 
 }
