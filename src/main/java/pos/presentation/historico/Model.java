@@ -1,22 +1,59 @@
 package pos.presentation.historico;
 
-import com.itextpdf.layout.properties.IListSymbolFactory;
-import pos.Application;
+import pos.logic.Factura;
+import pos.logic.Linea;
 import pos.presentation.AbstractModel;
-import pos.logic.*;
-import pos.presentation.AbstractModel;
+
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model extends AbstractModel {
-    Factura filterFac;
-    List<Factura> listFac;
-    Factura currentFac;
-    Linea filterLin;
-    List<Linea> listLin;
-    Linea currentLin;
-    int mode;
+    private Factura filterFac;
+    private List<Factura> listFac;
+    private Factura currentFac;
+    private Linea filterLin;
+    private List<Linea> listLin;
+    private Linea currentLin;
+    private int mode;
+
+    public Model() {
+        this.listFac = new ArrayList<>();
+        this.listLin = new ArrayList<>();
+        this.mode = 0; // Default mode, adjust as needed
+    }
+
+    public void init(List<Factura> facLista, List<Linea> linLista) {
+        this.currentFac = new Factura();
+        this.listFac = facLista;
+        this.filterFac = new Factura();
+        this.currentLin = new Linea();
+        this.listLin = linLista;
+        this.filterLin = new Linea();
+        firePropertyChange(LISTFAC);
+        firePropertyChange(LISTLIN);
+    }
+
+    public void searchByFecha(LocalDate fecha) throws Exception {
+        List<Factura> filteredList = new ArrayList<>();
+        for (Factura f : listFac) {
+            if (f.getFecha().equals(fecha)) {
+                filteredList.add(f);
+            }
+        }
+        setListFac(filteredList);
+    }
+
+    public void searchByNumFactura(String numFactura) throws Exception {
+        List<Factura> filteredList = new ArrayList<>();
+        for (Factura f : listFac) {
+            if (f.getNumero().equals(numFactura)) {
+                filteredList.add(f);
+            }
+        }
+        setListFac(filteredList);
+    }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -27,23 +64,7 @@ public class Model extends AbstractModel {
         firePropertyChange(LISTLIN);
         firePropertyChange(CURRENTLIN);
         firePropertyChange(FILTERLIN);
-        this.mode = Application.MODE_CREATE;
-    }
-    public Model(){
-        this.listFac = new ArrayList<>();
-        this.listLin = new ArrayList<>();
-    }
-
-    public void init(List<Factura> facLista, List<Linea> linLista){
-        this.currentFac = new Factura();
-        this.listFac = facLista;
-        this.filterFac = new Factura();
-        this.currentLin = new Linea();
-        this.listLin = linLista;
-        this.filterLin = new Linea();
-        this.mode = Application.MODE_CREATE;
-        firePropertyChange(LISTFAC);
-        firePropertyChange(LISTLIN);
+        this.mode = 0; // Default mode, adjust as needed
     }
 
     public List<Factura> getListFac() {
@@ -100,11 +121,11 @@ public class Model extends AbstractModel {
         firePropertyChange(FILTERLIN);
     }
 
-    public int getMode(){
+    public int getMode() {
         return mode;
     }
 
-    public void setMode(int mode){
+    public void setMode(int mode) {
         this.mode = mode;
     }
 
@@ -115,4 +136,11 @@ public class Model extends AbstractModel {
     public static final String FILTERFAC = "filterFac";
     public static final String FILTERLIN = "filterLin";
 
+    public Factura getFacturaByNumero(String numero) {
+        return null;
+    }
+
+    public List<Factura> getFacturasByFecha(LocalDate fecha) {
+        return null;
+    }
 }
